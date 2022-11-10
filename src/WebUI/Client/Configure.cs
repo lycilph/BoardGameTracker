@@ -18,7 +18,7 @@ public static class Configure
             .Enrich.WithProperty("InstanceId", Guid.NewGuid().ToString("n"))
             .Enrich.FromLogContext()
             .WriteTo.BrowserHttp(controlLevelSwitch: levelSwitch, endpointUrl: builder.HostEnvironment.BaseAddress + "ingest")
-            //.WriteTo.BrowserConsole()
+            .WriteTo.BrowserConsole()
             .CreateLogger();
         builder.Logging.AddProvider(new SerilogLoggerProvider());
 

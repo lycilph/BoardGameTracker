@@ -30,7 +30,7 @@ public class ApplicationUserStore :
         throw new NotImplementedException();
     }
 
-    public Task<ApplicationUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
+    public Task<ApplicationUser?> FindByIdAsync(string userId, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
@@ -40,17 +40,17 @@ public class ApplicationUserStore :
         throw new NotImplementedException();
     }
 
-    public Task<string> GetNormalizedEmailAsync(ApplicationUser user, CancellationToken cancellationToken)
+    public Task<string?> GetNormalizedEmailAsync(ApplicationUser user, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public Task<string> GetNormalizedUserNameAsync(ApplicationUser user, CancellationToken cancellationToken)
+    public Task<string?> GetNormalizedUserNameAsync(ApplicationUser user, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public Task<string> GetPhoneNumberAsync(ApplicationUser user, CancellationToken cancellationToken)
+    public Task<string?> GetPhoneNumberAsync(ApplicationUser user, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
@@ -75,7 +75,7 @@ public class ApplicationUserStore :
         throw new NotImplementedException();
     }
 
-    public Task SetEmailAsync(ApplicationUser user, string email, CancellationToken cancellationToken)
+    public Task SetEmailAsync(ApplicationUser user, string? email, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
@@ -85,7 +85,7 @@ public class ApplicationUserStore :
         throw new NotImplementedException();
     }
 
-    public Task SetPhoneNumberAsync(ApplicationUser user, string phoneNumber, CancellationToken cancellationToken)
+    public Task SetPhoneNumberAsync(ApplicationUser user, string? phoneNumber, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
@@ -95,7 +95,7 @@ public class ApplicationUserStore :
         throw new NotImplementedException();
     }
 
-    public Task SetUserNameAsync(ApplicationUser user, string userName, CancellationToken cancellationToken)
+    public Task SetUserNameAsync(ApplicationUser user, string? userName, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
@@ -175,7 +175,7 @@ public class ApplicationUserStore :
     #endregion Misc methods
 
     #region FindBy methods
-    public async Task<ApplicationUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
+    public async Task<ApplicationUser?> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
@@ -186,7 +186,7 @@ public class ApplicationUserStore :
         return users.FirstOrDefault()!;
     }
 
-    public async Task<ApplicationUser> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
+    public async Task<ApplicationUser?> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
@@ -199,12 +199,12 @@ public class ApplicationUserStore :
     #endregion FindBy methods
 
     #region Get properties
-    public Task<string> GetUserNameAsync(ApplicationUser user, CancellationToken cancellationToken)
+    public Task<string?> GetUserNameAsync(ApplicationUser user, CancellationToken cancellationToken)
     {
         return Task.FromResult(GetUserProperty(user, user => user.UserName, cancellationToken));
     }
 
-    public Task<string> GetEmailAsync(ApplicationUser user, CancellationToken cancellationToken)
+    public Task<string?> GetEmailAsync(ApplicationUser user, CancellationToken cancellationToken)
     {
         return Task.FromResult(GetUserProperty(user, user => user.Email, cancellationToken));
     }
@@ -214,7 +214,7 @@ public class ApplicationUserStore :
         return Task.FromResult(GetUserProperty(user, user => user.Id, cancellationToken));
     }
 
-    public Task<string> GetPasswordHashAsync(ApplicationUser user, CancellationToken cancellationToken)
+    public Task<string?> GetPasswordHashAsync(ApplicationUser user, CancellationToken cancellationToken)
     {
         return Task.FromResult(GetUserProperty(user, user => user.PasswordHash, cancellationToken));
     }
@@ -227,7 +227,7 @@ public class ApplicationUserStore :
             throw new ArgumentNullException(nameof(user));
 
         var roles = await context.Roles.GetAsync(user.RoleIds, cancellationToken);
-        return roles.Select(r => r.Name).ToList();
+        return roles.Select(r => r.Name ?? "Unknown").ToList();
     }
 
     private static T GetUserProperty<T>(ApplicationUser user, Func<ApplicationUser, T> accessor, CancellationToken cancellationToken)
@@ -242,19 +242,19 @@ public class ApplicationUserStore :
     #endregion Get properties
 
     #region Set properties
-    public Task SetPasswordHashAsync(ApplicationUser user, string passwordHash, CancellationToken cancellationToken)
+    public Task SetPasswordHashAsync(ApplicationUser user, string? passwordHash, CancellationToken cancellationToken)
     {
         SetUserProperty(user, passwordHash, (u, m) => u.PasswordHash = passwordHash, cancellationToken);
         return Task.CompletedTask;
     }
 
-    public Task SetNormalizedUserNameAsync(ApplicationUser user, string normalizedName, CancellationToken cancellationToken)
+    public Task SetNormalizedUserNameAsync(ApplicationUser user, string? normalizedName, CancellationToken cancellationToken)
     {
         SetUserProperty(user, normalizedName, (u, m) => u.NormalizedUserName = normalizedName, cancellationToken);
         return Task.CompletedTask;
     }
 
-    public Task SetNormalizedEmailAsync(ApplicationUser user, string normalizedEmail, CancellationToken cancellationToken)
+    public Task SetNormalizedEmailAsync(ApplicationUser user, string? normalizedEmail, CancellationToken cancellationToken)
     {
         SetUserProperty(user, normalizedEmail, (u, m) => u.NormalizedEmail = normalizedEmail, cancellationToken);
         return Task.CompletedTask;

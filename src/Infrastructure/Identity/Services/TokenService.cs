@@ -15,10 +15,10 @@ public class TokenService : ITokenService
     private readonly JWTSettings settings;
     private readonly IIdentityService identity_service;
 
-    public TokenService(IOptions<JWTSettings> options, IIdentityService identityService)
+    public TokenService(IOptions<JWTSettings> options, IIdentityService identity_service)
     {
         settings = options.Value;
-        this.identity_service = identityService;
+        this.identity_service = identity_service;
     }
 
     public SigningCredentials GetSigningCredentials()
@@ -33,8 +33,8 @@ public class TokenService : ITokenService
     {
         var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Name, user.UserName ?? string.Empty),
+                new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
                 new Claim(ClaimTypes.IsPersistent, is_persistent.ToString())
             };
 
@@ -92,7 +92,7 @@ public class TokenService : ITokenService
         var tokenHandler = new JwtSecurityTokenHandler();
         var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
 
-        if (securityToken is not JwtSecurityToken jwtSecurityToken || 
+        if (securityToken is not JwtSecurityToken jwtSecurityToken ||
             !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,
             StringComparison.InvariantCultureIgnoreCase))
         {

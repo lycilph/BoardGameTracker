@@ -49,7 +49,7 @@ public class Program
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = jwtSettings["ValidIssuer"],
                         ValidAudience = jwtSettings["ValidAudience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecurityKey"])),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecurityKey"]!)),
                         //ClockSkew = TimeSpan.Zero // This is ONLY for debugging
                     };
                 });

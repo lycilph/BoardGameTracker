@@ -30,8 +30,8 @@ public partial class UserCard
         var auth_state = await AuthenticationStateTask;
         var user = auth_state.User;
 
-        Username = user.FindFirstValue(ClaimTypes.Name);
-        Email = user.FindFirstValue(ClaimTypes.Email);
+        Username = user.FindFirstValue(ClaimTypes.Name) ?? "Unknown";
+        Email = user.FindFirstValue(ClaimTypes.Email) ?? "Unknown";
 
         StateHasChanged();
     }

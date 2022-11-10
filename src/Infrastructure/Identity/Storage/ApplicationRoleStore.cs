@@ -27,12 +27,12 @@ public class ApplicationRoleStore :
         throw new NotImplementedException();
     }
 
-    public Task<ApplicationRole> FindByIdAsync(string roleId, CancellationToken cancellationToken)
+    public Task<ApplicationRole?> FindByIdAsync(string roleId, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public Task<string> GetNormalizedRoleNameAsync(ApplicationRole role, CancellationToken cancellationToken)
+    public Task<string?> GetNormalizedRoleNameAsync(ApplicationRole role, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
@@ -42,7 +42,7 @@ public class ApplicationRoleStore :
         throw new NotImplementedException();
     }
 
-    public Task SetRoleNameAsync(ApplicationRole role, string roleName, CancellationToken cancellationToken)
+    public Task SetRoleNameAsync(ApplicationRole role, string? roleName, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
@@ -75,7 +75,7 @@ public class ApplicationRoleStore :
     #endregion CRUD
 
     #region FindBy methods
-    public async Task<ApplicationRole> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
+    public async Task<ApplicationRole?> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
@@ -88,7 +88,7 @@ public class ApplicationRoleStore :
     #endregion FindBy methods
 
     #region Get properties
-    public Task<string> GetRoleNameAsync(ApplicationRole role, CancellationToken cancellationToken)
+    public Task<string?> GetRoleNameAsync(ApplicationRole role, CancellationToken cancellationToken)
     {
         return Task.FromResult(GetUserProperty(role, role => role.Name, cancellationToken));
     }
@@ -105,7 +105,7 @@ public class ApplicationRoleStore :
     #endregion Get properties
 
     #region Set properties
-    public Task SetNormalizedRoleNameAsync(ApplicationRole role, string normalizedName, CancellationToken cancellationToken)
+    public Task SetNormalizedRoleNameAsync(ApplicationRole role, string? normalizedName, CancellationToken cancellationToken)
     {
         SetUserProperty(role, normalizedName, (r, m) => r.NormalizedName = normalizedName, cancellationToken);
         return Task.CompletedTask;

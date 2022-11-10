@@ -24,8 +24,9 @@ public class Program
 
         builder.ConfigureLogging();
 
-        Log.ForContext<Program>().Information("Starting web app");
-        
+        // There is a bug right now in the Serilog.Sinks.BrowserConsole package (see issue here: https://github.com/serilog/serilog-sinks-browserconsole/issues/20)
+        //Log.ForContext<Program>().Information("Starting web app");
+
         builder.Services.AddHttpClient<DummyService>(
             client =>
             {
