@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Project specific excludes
+/src/WebUI/Server/.config/dotnet-tools.json
+/src/WebUI/Server/Properties/ServiceDependencies/BoardGameTrackerApp - Web Deploy/profile.arm.json
