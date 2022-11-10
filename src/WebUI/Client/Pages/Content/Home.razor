@@ -1,43 +1,45 @@
 ﻿@page "/content/home"
 @page "/"
 
-<MudGrid Spacing="2" Justify="Justify.Center">
-    <MudItem xs="12" Class="mb-8">
-        <MudText Typo="Typo.h2" Align="Align.Center">BoardGameTracker</MudText>
-    </MudItem>
+<MudPaper Class="py-8">
+    <MudGrid Spacing="2" Justify="Justify.Center">
+        <MudItem xs="12" Class="mb-8">
+            <MudText Typo="Typo.h2" Align="Align.Center">BoardGameTracker</MudText>
+        </MudItem>
 
-    <MudItem xs="3">
-        <MudButton Variant="Variant.Filled" DisableElevation>
-            <div style="height:140px; width:140px">
-                <MudText Typo="Typo.h5" Class="mt-2">Collection</MudText>
-                <MudText Class="mt-4"># games in your collection</MudText>
-            </div>
-        </MudButton>
-    </MudItem>
-    <MudItem xs="3">
-        <MudButton Variant="Variant.Filled" DisableElevation>
-            <div style="height:140px; width:140px">
-                <MudText Typo="Typo.h5">Plays</MudText>
-                <MudText Class="mt-4"># plays logged</MudText>
-            </div>
-        </MudButton>
-    </MudItem>
-    <MudItem xs="3">
-        <MudButton Variant="Variant.Filled" DisableElevation>
-            <div style="height:140px; width:140px">
-                <MudText Typo="Typo.h5">Challenges</MudText>
-                <MudText Class="mt-4"># challenges open</MudText>
-            </div>
-        </MudButton>
-    </MudItem>
-</MudGrid>
+        <MudItem xs="3">
+            <MudButton Variant="Variant.Filled" DisableElevation>
+                <div style="height:140px; width:140px">
+                    <MudText Typo="Typo.h5" Class="mt-2">Collection</MudText>
+                    <MudText Class="mt-4"># games in your collection</MudText>
+                </div>
+            </MudButton>
+        </MudItem>
+        <MudItem xs="3">
+            <MudButton Variant="Variant.Filled" DisableElevation>
+                <div style="height:140px; width:140px">
+                    <MudText Typo="Typo.h5">Plays</MudText>
+                    <MudText Class="mt-4"># plays logged</MudText>
+                </div>
+            </MudButton>
+        </MudItem>
+        <MudItem xs="3">
+            <MudButton Variant="Variant.Filled" DisableElevation>
+                <div style="height:140px; width:140px">
+                    <MudText Typo="Typo.h5">Challenges</MudText>
+                    <MudText Class="mt-4"># challenges open</MudText>
+                </div>
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+</MudPaper>
 
-<MudCarousel Class="mud-width-full mt-12" 
-             Style="height:200px;" 
-             ShowArrows="true" 
+<MudCarousel Class="mud-width-full mt-12"
+             Style="height:200px;"
+             ShowArrows="true"
              ShowBullets="true"
-             EnableSwipeGesture="true" 
-             AutoCycle="true" 
+             EnableSwipeGesture="true"
+             AutoCycle="true"
              AutoCycleTime="@TimeSpan.FromSeconds(2)"
              TData="object">
     <MudCarouselItem Transition="Transition.Slide">
