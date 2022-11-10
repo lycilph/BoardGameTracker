@@ -1,4 +1,4 @@
-﻿@page "/register"
+﻿@page "/authentication/login"
 @attribute [AllowAnonymous]
 
 <MudForm Model="@request" Validation="@ValidateValue" ValidationDelay="0">
@@ -10,12 +10,12 @@
         </MudItem>
         <MudItem xs="12" Class="mt-n4">
             <div class="d-flex justify-center">
-                <MudText Typo="Typo.h4">Register</MudText>
+                <MudText Typo="Typo.h4">Sign In</MudText>
             </div>
         </MudItem>
         <MudItem xs="12" Class="mt-n4">
             <div class="d-flex justify-center">
-                <MudText>Already have an account? <MudLink Href="/login">Sign In</MudLink></MudText>
+                <MudText>Don't have an account? <MudLink Href="/authentication/register">Register here</MudLink></MudText>
             </div>
         </MudItem>
 
@@ -34,46 +34,33 @@
         }
 
         <MudItem xs="12">
-            <MudTextField @ref="input_ref" 
-                          Label="User Name"
-                          For="@(() => request.Username)"
+            <MudTextField @ref="input_ref"
+                          Label="Email/Username" 
+                          For="@(() => request.EmailOrUsername)" 
                           Immediate=true
                           OnlyValidateIfDirty=true
-                          @bind-Value="request.Username"
-                          OnKeyPress="SubmitOnEnterAsync" />
+                          @bind-Value="request.EmailOrUsername" 
+                          OnKeyPress="SubmitOnEnterAsync"
+                          Variant="Variant.Outlined" />
         </MudItem>
 
-        <MudItem xs="12" sm="6" md="6">
-            <MudTextField Label="E-mail"
-                          For="@(() => request.Email)"
-                          Immediate=true
-                          OnlyValidateIfDirty=true
-                          @bind-Value="request.Email"
-                          OnKeyPress="SubmitOnEnterAsync" />
-        </MudItem>
-        <MudItem xs="12" sm="6" md="6">
-            <MudTextField Label="Phone Number"
-                          For="@(() => request.PhoneNumber)"
-                          Immediate=true
-                          @bind-Value="request.PhoneNumber"
-                          OnKeyPress="SubmitOnEnterAsync" />
-        </MudItem>
-
-        <MudItem xs="12" sm="6" md="6">
+        <MudItem xs="12">
             <PasswordField Label="Password"
                            For="@(() => request.Password)"
                            Immediate=true
                            OnlyValidateIfDirty=true
                            @bind-Password="request.Password"
-                           OnKeyPress="SubmitOnEnterAsync" />
+                           OnKeyPress="SubmitOnEnterAsync" 
+                           Variant="Variant.Outlined"/>
         </MudItem>
-        <MudItem xs="12" sm="6" md="6">
-            <PasswordField Label="ConfirmPassword"
-                           For="@(() => request.ConfirmPassword)"
-                           Immediate=true
-                           OnlyValidateIfDirty=true
-                           @bind-Password="request.ConfirmPassword"
-                           OnKeyPress="SubmitOnEnterAsync" />
+
+        <MudItem xs="12" Class="d-flex justify-space-between align-center">
+            <MudSwitch Label="Remember me?" 
+                       For="@(() => request.RememberMe)" 
+                       @bind-Checked="request.RememberMe" 
+                       Color="Color.Primary" 
+                       Class="ml-n1">
+                   </MudSwitch> <MudLink Href="/account/forgot-password">Forgot password?</MudLink>
         </MudItem>
 
         <MudItem xs="12" Class="d-flex justify-center">
@@ -81,10 +68,10 @@
                        Color="Color.Primary"
                        Size="Size.Large"
                        Style="width: 100%;"
-                       OnClick="@(async () => await SubmitAsync())">Register</MudButton>
+                       OnClick="@(async () => await SubmitAsync())">Sign In</MudButton>
         </MudItem>
     </MudGrid>
-    
+
     <MudOverlay Visible="is_loading" DarkBackground="true" Absolute="true">
         <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
     </MudOverlay>

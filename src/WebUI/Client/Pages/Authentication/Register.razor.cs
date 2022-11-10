@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
 
-namespace BoardGameTracker.Client.Pages;
+namespace BoardGameTracker.Client.Pages.Authentication;
 
-public partial class Login
+public partial class Register
 {
-    private readonly LoginRequest request = new();
+    private readonly RegisterRequest request = new();
 
     private MudTextField<string> input_ref = null!;
     private bool is_loading = false;
@@ -18,7 +18,7 @@ public partial class Login
     private IEnumerable<string> errors = new List<string>();
 
     [Inject]
-    public IValidator<LoginRequest> Validator { get; set; } = null!;
+    public IValidator<RegisterRequest> Validator { get; set; } = null!;
     [Inject]
     public IAuthenticationClient AuthenticationClient { get; set; } = null!;
     [Inject]
@@ -37,7 +37,7 @@ public partial class Login
     public Func<object, string, Task<IEnumerable<string>>> ValidateValue => async (model, propertyName) =>
     {
         var result = await Validator.ValidateAsync(
-            ValidationContext<LoginRequest>.CreateWithOptions(
+            ValidationContext<RegisterRequest>.CreateWithOptions(
                 request, x => x.IncludeProperties(propertyName)));
         if (result.IsValid)
             return Array.Empty<string>();
@@ -58,7 +58,7 @@ public partial class Login
             return;
         }
 
-        var result = await AuthenticationClient.Login(request);
+        var result = await AuthenticationClient.RegisterUser(request);
         if (!result.IsSuccessStatusCode)
         {
             is_loading = false;

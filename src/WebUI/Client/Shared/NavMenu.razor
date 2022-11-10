@@ -2,6 +2,10 @@
 
 <MudNavMenu Bordered=true>
     <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Home">Home</MudNavLink>
+    <MudNavLink Href="/content/collection" Match="NavLinkMatch.Prefix" Icon="@Icons.Outlined.CollectionsBookmark">Collection</MudNavLink>
+    <MudNavLink Href="/content/plays" Match="NavLinkMatch.Prefix" Icon="@Icons.Outlined.Edit">Plays</MudNavLink>
+    <MudNavLink Href="/content/challenges" Match="NavLinkMatch.Prefix" Icon="@Icons.Outlined.Checklist">Challenges</MudNavLink>
+    <MudDivider DividerType="DividerType.Middle"/>
     <MudNavLink Href="https://BoardGameGeek.com" Target="_blank" Icon="@Icons.Material.Outlined.Outbound">BoardGameGeek</MudNavLink>
 
     <MudListSubheader Class="mt-2 mb-n2">Personal</MudListSubheader>
@@ -9,8 +13,8 @@
     <MudNavLink Href="/dashboard" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.Dashboard">Dashboard</MudNavLink>
 
     <MudListSubheader Class="mt-2 mb-n2">Administrator</MudListSubheader>
-    <MudNavLink Href="/identity/users" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.Person">Users</MudNavLink>
-    <MudNavLink Href="/identity/roles" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.Person">Roles</MudNavLink>
+    <MudNavLink Href="/identity/users" Match="NavLinkMatch.Prefix" Icon="@Icons.Outlined.ManageAccounts">Users</MudNavLink>
+    <MudNavLink Href="/identity/roles" Match="NavLinkMatch.Prefix" Icon="@Icons.Outlined.AccountTree">Roles</MudNavLink>
     <MudNavLink Href="/swagger/index.html" Target="_blank" Icon="@Icons.Material.Outlined.LiveHelp">Swagger</MudNavLink>
 
     <MudListSubheader Class="mt-2 mb-n2">Debug</MudListSubheader>
