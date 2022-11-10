@@ -1,6 +1,4 @@
-using BoardGameTracker.Application.Common.Notifications;
 using BoardGameTracker.Application.Services;
-using MediatR;
 using Microsoft.AspNetCore.Components;
 
 namespace BoardGameTracker.Client.Pages;
@@ -11,8 +9,6 @@ public partial class Home
     public ILogger<Home> Logger { get; set; } = null!;
     [Inject]
     public DummyService DummyService { get; set; } = null!;
-    [Inject]
-    public IPublisher Publisher { get; set; } = null!;
 
     private string time = string.Empty;
 
@@ -34,10 +30,5 @@ public partial class Home
         }
 
         StateHasChanged();
-    }
-
-    private async Task SendMessage()
-    {
-        await Publisher.Publish(new SnackbarNotification("Message from Home page"));
     }
 }

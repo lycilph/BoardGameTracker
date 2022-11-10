@@ -1,0 +1,17 @@
+﻿@page "/info/debug"
+@using BoardGameTracker.Application.Common.Notifications;
+@using MediatR;
+
+<h1>Debugging stuff</h1>
+
+<MudButton OnClick="SendMessage">Send snackbar Message</MudButton>
+
+@code {
+    [Inject]
+    public IPublisher Publisher { get; set; } = null!;
+
+    private async Task SendMessage()
+    {
+        await Publisher.Publish(new SnackbarNotification("Message from debug page"));
+    }
+}
