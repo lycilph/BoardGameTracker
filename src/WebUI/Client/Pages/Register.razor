@@ -1,0 +1,91 @@
+﻿@page "/register"
+@attribute [AllowAnonymous]
+
+<MudForm Model="@request" Validation="@ValidateValue" ValidationDelay="0">
+    <MudGrid>
+        <MudItem xs="12">
+            <div class="d-flex justify-center">
+                <MudImage Src="/Images/logo-192x192.png" Width="60" />
+            </div>
+        </MudItem>
+        <MudItem xs="12" Class="mt-n4">
+            <div class="d-flex justify-center">
+                <MudText Typo="Typo.h4">Register</MudText>
+            </div>
+        </MudItem>
+        <MudItem xs="12" Class="mt-n4">
+            <div class="d-flex justify-center">
+                <MudText>Already have an account? <MudLink Href="/login">Sign In</MudLink></MudText>
+            </div>
+        </MudItem>
+
+        @if (show_errors)
+        {
+            <MudItem xs="12">
+                <div class="d-flex justify-center">
+                    <MudAlert Severity="Severity.Warning">
+                        @foreach (var error in errors)
+                        {
+                            <p>@error</p>
+                        }
+                    </MudAlert>
+                </div>
+            </MudItem>
+        }
+
+        <MudItem xs="12">
+            <MudTextField @ref="input_ref" 
+                          Label="User Name"
+                          For="@(() => request.Username)"
+                          Immediate=true
+                          OnlyValidateIfDirty=true
+                          @bind-Value="request.Username"
+                          OnKeyPress="SubmitOnEnterAsync" />
+        </MudItem>
+
+        <MudItem xs="12" sm="6" md="6">
+            <MudTextField Label="E-mail"
+                          For="@(() => request.Email)"
+                          Immediate=true
+                          OnlyValidateIfDirty=true
+                          @bind-Value="request.Email"
+                          OnKeyPress="SubmitOnEnterAsync" />
+        </MudItem>
+        <MudItem xs="12" sm="6" md="6">
+            <MudTextField Label="Phone Number"
+                          For="@(() => request.PhoneNumber)"
+                          Immediate=true
+                          @bind-Value="request.PhoneNumber"
+                          OnKeyPress="SubmitOnEnterAsync" />
+        </MudItem>
+
+        <MudItem xs="12" sm="6" md="6">
+            <PasswordField Label="Password"
+                           For="@(() => request.Password)"
+                           Immediate=true
+                           OnlyValidateIfDirty=true
+                           @bind-Password="request.Password"
+                           OnKeyPress="SubmitOnEnterAsync" />
+        </MudItem>
+        <MudItem xs="12" sm="6" md="6">
+            <PasswordField Label="ConfirmPassword"
+                           For="@(() => request.ConfirmPassword)"
+                           Immediate=true
+                           OnlyValidateIfDirty=true
+                           @bind-Password="request.ConfirmPassword"
+                           OnKeyPress="SubmitOnEnterAsync" />
+        </MudItem>
+
+        <MudItem xs="12" Class="d-flex justify-center">
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       Size="Size.Large"
+                       Style="width: 100%;"
+                       OnClick="@(async () => await SubmitAsync())">Register</MudButton>
+        </MudItem>
+    </MudGrid>
+    
+    <MudOverlay Visible="is_loading" DarkBackground="true" Absolute="true">
+        <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
+    </MudOverlay>
+</MudForm>

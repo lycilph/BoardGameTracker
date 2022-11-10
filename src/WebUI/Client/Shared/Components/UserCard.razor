@@ -1,0 +1,12 @@
+﻿<MudCard Elevation="0" Square="true" Class="@Class">
+    <MudCardHeader>
+        <CardHeaderAvatar>
+          <MudAvatar Color="Color.Secondary">@Username.ToUpper().FirstOrDefault()</MudAvatar>
+        </CardHeaderAvatar>
+        <CardHeaderContent>
+            <MudText Typo="Typo.body2">@Username</MudText>
+            <MudText Typo="Typo.caption">@Email</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+</MudCard>
+

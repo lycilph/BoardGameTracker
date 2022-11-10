@@ -1,0 +1,11 @@
+﻿@inherits LayoutComponentBase
+        
+<PageTitle>Not found</PageTitle>
+
+<MudThemeProvider />
+
+<MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-column align-center">
+    <img src="Images/404-animated.svg" width="80%"/>
+    <MudText Typo="Typo.h5" Class="mt-n8" Align="Align.Center">@Body</MudText>
+    <MudButton Class=" mt-4" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Link="/">Home</MudButton>
+</MudContainer>

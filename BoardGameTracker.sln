@@ -3,13 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardGameTracker.Server", "src\WebUI\Server\BoardGameTracker.Server.csproj", "{189138C5-67D1-4155-ABFC-A303BFDFB035}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BoardGameTracker.Server", "src\WebUI\Server\BoardGameTracker.Server.csproj", "{189138C5-67D1-4155-ABFC-A303BFDFB035}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardGameTracker.Client", "src\WebUI\Client\BoardGameTracker.Client.csproj", "{0655CDD4-EFD1-4A8F-8309-29927ECF6796}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BoardGameTracker.Client", "src\WebUI\Client\BoardGameTracker.Client.csproj", "{0655CDD4-EFD1-4A8F-8309-29927ECF6796}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebUI", "WebUI", "{E02689FF-D460-4D5B-8354-BC3A16FF67A7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{B55823A7-3527-4F30-8B1B-FADD1DA8BD76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "src\Application\Application.csproj", "{46473EB8-D67F-480B-AA3F-2C527E768FB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{ADA5570B-3FA6-4F14-B0D1-8880442D27B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "src\Domain\Domain.csproj", "{EAE3B7A5-D3B6-403E-868A-B6E473528FE6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +31,18 @@ Global
 		{0655CDD4-EFD1-4A8F-8309-29927ECF6796}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0655CDD4-EFD1-4A8F-8309-29927ECF6796}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0655CDD4-EFD1-4A8F-8309-29927ECF6796}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46473EB8-D67F-480B-AA3F-2C527E768FB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46473EB8-D67F-480B-AA3F-2C527E768FB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46473EB8-D67F-480B-AA3F-2C527E768FB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46473EB8-D67F-480B-AA3F-2C527E768FB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADA5570B-3FA6-4F14-B0D1-8880442D27B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADA5570B-3FA6-4F14-B0D1-8880442D27B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADA5570B-3FA6-4F14-B0D1-8880442D27B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADA5570B-3FA6-4F14-B0D1-8880442D27B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAE3B7A5-D3B6-403E-868A-B6E473528FE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAE3B7A5-D3B6-403E-868A-B6E473528FE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAE3B7A5-D3B6-403E-868A-B6E473528FE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAE3B7A5-D3B6-403E-868A-B6E473528FE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -33,6 +51,9 @@ Global
 		{189138C5-67D1-4155-ABFC-A303BFDFB035} = {E02689FF-D460-4D5B-8354-BC3A16FF67A7}
 		{0655CDD4-EFD1-4A8F-8309-29927ECF6796} = {E02689FF-D460-4D5B-8354-BC3A16FF67A7}
 		{E02689FF-D460-4D5B-8354-BC3A16FF67A7} = {B55823A7-3527-4F30-8B1B-FADD1DA8BD76}
+		{46473EB8-D67F-480B-AA3F-2C527E768FB3} = {B55823A7-3527-4F30-8B1B-FADD1DA8BD76}
+		{ADA5570B-3FA6-4F14-B0D1-8880442D27B2} = {B55823A7-3527-4F30-8B1B-FADD1DA8BD76}
+		{EAE3B7A5-D3B6-403E-868A-B6E473528FE6} = {B55823A7-3527-4F30-8B1B-FADD1DA8BD76}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {59CD0D97-DEEC-44AD-9161-068BE6BFBAAC}

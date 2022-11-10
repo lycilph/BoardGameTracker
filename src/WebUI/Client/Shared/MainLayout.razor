@@ -1,17 +1,100 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<PageTitle>BoardGameTracker</PageTitle>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
+<MudThemeProvider IsDarkMode="@darkMode" />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+<AuthorizeView>
+    <Authorizing>
+        <MudLayout>
+            <MudAppBar Elevation="5">
+                <MudSpacer />
+                <MudTooltip Text="Toggle Light/Dark Mode">
+                    <MudToggleIconButton Icon="@Icons.Outlined.WbSunny" ToggledIcon="@Icons.Outlined.DarkMode" Color="Color.Inherit" @bind-Toggled="@darkMode" />
+                </MudTooltip>
+            </MudAppBar>
+
+            <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex align-center" Style="height: 100vh;">
+                <MudPaper Elevation="25" Class="pa-8" Style="width: 500px;">
+                    <MudText Typo="Typo.h5" Align="Align.Center">Please wait, we are authorizing the user.</MudText>
+                    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                </MudPaper>
+            </MudContainer>
+        </MudLayout>
+    </Authorizing>
+
+    <NotAuthorized>
+        <MudLayout>
+            <MudAppBar Elevation="5">
+                <MudSpacer />
+                <MudTooltip Text="Toggle Light/Dark Mode">
+                    <MudToggleIconButton Icon="@Icons.Outlined.WbSunny" ToggledIcon="@Icons.Outlined.DarkMode" Color="Color.Inherit" @bind-Toggled="@darkMode" />
+                </MudTooltip>
+            </MudAppBar>
+
+            <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex align-center" Style="height: 100vh;">
+                <MudPaper Elevation="25" Class="pa-8" Style="width: 500px;">
+                    @Body
+                </MudPaper>
+            </MudContainer>
+        </MudLayout>
+    </NotAuthorized>
+
+    <Authorized>
+        <MudLayout>
+            <MudAppBar Elevation="25" Dense=true>
+                <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+                <MudImage Src="/Images/logo-32x32-white.png" />
+                <MudLink Class="ml-3" Color="Color.Inherit" Typo="Typo.h5" Underline="Underline.None" Href="/">BoardGameTracker</MudLink>
+                <MudSpacer />
+                <MudTooltip Text="Toggle Light/Dark Mode">
+                    <MudToggleIconButton Icon="@Icons.Outlined.WbSunny" ToggledIcon="@Icons.Outlined.DarkMode" Color="Color.Inherit" @bind-Toggled="@darkMode" />
+                </MudTooltip>
+                <MudTooltip Text="User Profile">
+                    <MudMenu Icon="@Icons.Outlined.PermIdentity" Color="Color.Inherit" Dense=true LockScroll="true">
+                        <ChildContent>
+                            <UserCard Class="mt-n2" />
+                            <MudDivider Class="mb-2" />
+                            <MudListItem Text="Account" Href="/identity/account" Icon="@Icons.Material.Outlined.Person" />
+                            <MudListItem Text="Logout" Href="/logout" Icon="@Icons.Material.Filled.Logout" />
+                        </ChildContent>
+                    </MudMenu>
+                </MudTooltip>
+            </MudAppBar>
+            <MudDrawer @bind-Open="drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="25">
+                <NavMenu />
+            </MudDrawer>
+            <MudMainContent>
+                <MudContainer Class="mt-4 mb-16">
+                    <SnackbarErrorBoundary @ref="errorBoundary">
+                        <ChildContent>
+                            @Body
+                        </ChildContent>
+                        <ErrorContent Context="Exception">
+                            <SomethingWentWrong Message="@Exception.Message"/>
+                        </ErrorContent>
+                    </SnackbarErrorBoundary>
+                </MudContainer>
+            </MudMainContent>
+        </MudLayout>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    private bool drawerOpen = true;
+    private bool darkMode = false;
+
+    private ErrorBoundary? errorBoundary;
+
+    protected override void OnParametersSet()
+    {
+        errorBoundary?.Recover();
+    }
+
+    private void DrawerToggle()
+    {
+        drawerOpen = !drawerOpen;
+    }
+}

@@ -1,0 +1,14 @@
+﻿<MudCard Elevation="5" Class="d-flex flex-column align-center">
+    <MudCardHeader>
+        <MudText Typo="Typo.h4">Something went wrong...</MudText>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudImage Src="images/error.svg" />
+        <MudText Align="Align.Center" Color="Color.Error">@Message</MudText>
+    </MudCardContent>
+</MudCard>
+
+@code {
+    [Parameter]
+    public string Message { get; set; } = string.Empty;
+}
