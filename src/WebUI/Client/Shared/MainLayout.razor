@@ -34,11 +34,11 @@
                 </MudTooltip>
             </MudAppBar>
 
-            <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex align-center" Style="height: 100vh;">
-                <MudPaper Elevation="25" Class="pa-8" Style="width: 500px;">
+            <MudMainContent>
+                <MudPaper Elevation="25" Class="pa-8 mx-auto mt-12" Style="width: 500px; position: relative;">
                     @Body
                 </MudPaper>
-            </MudContainer>
+            </MudMainContent>
         </MudLayout>
     </NotAuthorized>
 
@@ -73,7 +73,7 @@
                             @Body
                         </ChildContent>
                         <ErrorContent Context="Exception">
-                            <SomethingWentWrong Message="@Exception.Message"/>
+                            <SomethingWentWrong Message="@Exception.Message" />
                         </ErrorContent>
                     </SnackbarErrorBoundary>
                 </MudContainer>
