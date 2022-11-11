@@ -38,7 +38,7 @@ public class SnackbarNotificationHandler : INotificationHandler<SnackbarNotifica
 
     private Task Logout()
     {
-        navigation_manager.NavigateTo("/logout");
+        navigation_manager.NavigateTo("/authentication/logout");
         return Task.CompletedTask;
     }
 #pragma warning restore IDE0039
