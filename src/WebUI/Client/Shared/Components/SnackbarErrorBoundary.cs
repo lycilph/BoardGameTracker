@@ -1,5 +1,5 @@
 ﻿using BoardGameTracker.Application.Common.Notifications;
-using BoardGameTracker.Domain;
+using BoardGameTracker.Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;

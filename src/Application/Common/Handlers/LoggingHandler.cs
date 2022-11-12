@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 
 namespace BoardGameTracker.Application.Common.Handlers;
 
@@ -14,9 +15,16 @@ public class LoggingHandler : DelegatingHandler
     protected override async Task<HttpResponseMessage> SendAsync(
         HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        var uri = request.RequestUri;
-        logger.LogDebug("HTTP Request: {uri} {@Request}", uri, request);
+        var sw = new Stopwatch();
+        HttpResponseMessage response;
+        using (new Benchmark(sw))
+        { 
+            response = await base.SendAsync(request, cancellationToken);
+        }
 
-        return await base.SendAsync(request, cancellationToken);
+        var uri = request.RequestUri;
+        logger.LogInformation("HTTP {method} {uri} responded {code} in {time} ms", request.Method, uri, response.StatusCode, sw.ElapsedMilliseconds);
+
+        return response;
     }
 }

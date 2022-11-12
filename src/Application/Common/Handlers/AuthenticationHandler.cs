@@ -1,6 +1,6 @@
 ﻿using BoardGameTracker.Application.Identity.Services;
 using BoardGameTracker.Application.Identity.Storage;
-using BoardGameTracker.Domain;
+using BoardGameTracker.Domain.Exceptions;
 using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Net.Http.Headers;
