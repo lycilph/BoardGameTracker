@@ -1,67 +1,63 @@
 ﻿@page "/content/home"
 @page "/"
+@inject NavigationManager NavigationManager
 
-<MudPaper Class="py-8">
-    <MudGrid Spacing="2" Justify="Justify.Center">
-        <MudItem xs="12" Class="mb-8">
-            <MudText Typo="Typo.h2" Align="Align.Center">BoardGameTracker</MudText>
-        </MudItem>
+<MudGrid Justify="Justify.Center">
+    <MudItem xs="12">
+        <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
+            <MudText Typo="Typo.h2">BoardGameTracker</MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="10" md="3" Class="mx-2">
+        <MudPaper Class="py-8" @onclick=@(() => NavigationManager.NavigateTo("/content/collection"))>
+            <MudStack>
+                <MudText Align="Align.Center" Typo="Typo.h5">Collection</MudText>
+                <MudText Align="Align.Center"># Games in collection</MudText>
+            </MudStack>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="10" md="3" Class="mx-2">
+        <MudPaper Class="py-8">
+            <MudStack>
+                <MudText Align="Align.Center" Typo="Typo.h5">Plays</MudText>
+                <MudText Align="Align.Center"># plays logged</MudText>
+            </MudStack>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="10" md="3" Class="mx-2">
+        <MudPaper Class="py-8">
+            <MudStack>
+                <MudText Align="Align.Center" Typo="Typo.h5">Challenges</MudText>
+                <MudText Align="Align.Center"># Challenges open</MudText>
+            </MudStack>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
 
-        <MudItem xs="3">
-            <MudButton Variant="Variant.Filled" DisableElevation Href="/content/collection">
-                <div style="height:140px; width:140px">
-                    <MudText Typo="Typo.h5" Class="mt-2">Collection</MudText>
-                    <MudText Class="mt-4"># games in your collection</MudText>
-                </div>
-            </MudButton>
-        </MudItem>
-        <MudItem xs="3">
-            <MudButton Variant="Variant.Filled" DisableElevation Href="/content/plays">
-                <div style="height:140px; width:140px">
-                    <MudText Typo="Typo.h5">Plays</MudText>
-                    <MudText Class="mt-4"># plays logged</MudText>
-                </div>
-            </MudButton>
-        </MudItem>
-        <MudItem xs="3">
-            <MudButton Variant="Variant.Filled" DisableElevation Href="/content/challenges">
-                <div style="height:140px; width:140px">
-                    <MudText Typo="Typo.h5">Challenges</MudText>
-                    <MudText Class="mt-4"># challenges open</MudText>
-                </div>
-            </MudButton>
-        </MudItem>
-    </MudGrid>
-</MudPaper>
-
-<MudPaper Class="py-8 mt-4" Style="position: relative;">
-    <MudCarousel Class="mud-width-full"
-                 Style="height:300px;"
-                 ShowArrows="true"
-                 ShowBullets="true"
-                 EnableSwipeGesture="true"
-                 AutoCycle="true"
-                 TData="object"
-                 @ref="carousel">
-        @foreach (var chunk in games.Chunk(3))
+<MudText Typo="Typo.h4" Class="mt-12">BoardGameGeek Hotness List</MudText>
+@if (!games.Any())
+{
+    <MudPaper Class="d-flex justify-center mud-width-full py-8"
+          Elevation=0>
+        <MudStack Row="true">
+            @for (int i = 0; i < 3; i++)
+            {
+                <MudSkeleton Width="200px" Height="400px"/>
+            }
+        </MudStack>
+    </MudPaper>
+}
+else
+{
+    <MudStack Row=true Class="mt-4 py-2 overflow-scroll">
+        @foreach (var game in games)
         {
-            <MudCarouselItem Transition="Transition.Slide">
-                <MudGrid Spacing="2" Justify="Justify.Center">
-                    @foreach (var game in chunk)
-                    {
-                        <MudItem>
-                            <MudPaper Class="pa-2">
-                                <MudImage Src="@game.Thumbnail" Height="200" Width="200" ObjectFit="ObjectFit.Cover" />
-                                <MudText Typo="Typo.body2">@game.Name</MudText>
-                            </MudPaper>
-                        </MudItem>
-                    }
-                </MudGrid>
-            </MudCarouselItem>
+            <MudCard Class="mx-2" @onclick="(() => GameClick(game))">
+                <MudImage Src="@game.Thumbnail" Width="200" Height="200" ObjectFit="ObjectFit.Cover" />
+                <MudCardContent>
+                    <MudText Typo="Typo.body2">@game.Name</MudText>
+                </MudCardContent>
+            </MudCard>
         }
-    </MudCarousel>
-
-    <MudOverlay Visible="@is_loading" DarkBackground="true" Absolute="true">
-        <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
-    </MudOverlay>
-</MudPaper>
+    </MudStack>
+}

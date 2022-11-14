@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace BoardGameTracker.Client.Pages.Content;
 
-public partial class Home
+public partial class Collection
 {
     [Inject]
     public ILogger<Home> Logger { get; set; } = null!;
@@ -18,13 +18,7 @@ public partial class Home
     {
         is_loading = true;
         games = await Client.GetHotnessAsync();
-        is_loading = false;
-        
-        StateHasChanged();
-    }
-
-    private void GameClick(BoardGame game)
-    {
-        Logger.LogInformation($"Clicked {game.Name}");
+        await Task.Delay(1000);
+        is_loading= false;
     }
 }

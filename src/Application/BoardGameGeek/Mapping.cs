@@ -15,7 +15,7 @@ public static class Mapping
         };
     }
 
-    public static IEnumerable<BoardGame> Map(BoardgamesListDTO<HotnessBoardgameDTO> dtos)
+    public static List<BoardGame> Map(BoardgamesListDTO<HotnessBoardgameDTO> dtos)
     {
         return dtos.games.Select(Map).ToList();
     }

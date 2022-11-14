@@ -1,7 +1,51 @@
 ﻿@page "/content/collection"
+@using BoardGameTracker.Data;
 
-<h3>Collection</h3>
+<MudPaper Elevation="25" Class="mb-2">
+    <MudToolBar>
+        <MudText Typo="Typo.h5">Collection</MudText>
+        <MudSpacer />
+        <MudTooltip Text="Import from BoardGameGeek">
+            <MudIconButton Icon="@Icons.Outlined.CloudDownload" 
+                           Color="Color.Inherit" 
+                           Href="/content/import"/>
+        </MudTooltip>
+    </MudToolBar>
+</MudPaper>
 
-@code {
+<MudTable T="BoardGame"
+          Items="@games"
+          Loading="@is_loading"
+          Dense=true>
+    <ToolBarContent>
+        <MudTextField Clearable=true 
+                      Immediate=true 
+                      Placeholder="Search" 
+                      Adornment="Adornment.Start" 
+                      AdornmentIcon="@Icons.Material.Filled.Search" 
+                      IconSize="Size.Medium" 
+                      Class="mt-0"
+                      T="string"/>
+        <MudPaper Width="25%" Elevation="0">
+            <MudSelect T="string" 
+                       Label="Status to view"
+                       MultiSelection="true" 
+                       SelectAll="true" 
+                       Class="ml-2 mt-0">
+                <MudSelectItem T="string">Owned</MudSelectItem>
+                <MudSelectItem T="string">Wishlist</MudSelectItem>
+                <MudSelectItem T="string">PrevOwned</MudSelectItem>
+            </MudSelect>
+        </MudPaper>
+    </ToolBarContent>
+    <NoRecordsContent>
+        <MudText>No records found</MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>Loading...</MudText>
+    </LoadingContent>
+</MudTable>
 
-}
+<MudScrollToTop>
+    <MudFab Color="Color.Secondary" Icon="@Icons.Filled.ArrowCircleUp" />
+</MudScrollToTop>

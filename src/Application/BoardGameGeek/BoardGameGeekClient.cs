@@ -12,7 +12,7 @@ public class BoardGameGeekClient
         this.client = client;
     }
 
-    public async Task<IEnumerable<BoardGame>> GetHotnessAsync()
+    public async Task<List<BoardGame>> GetHotnessAsync()
     {
         var dtos = await client.GetFromXmlAsync<BoardgamesListDTO<HotnessBoardgameDTO>>("hot?boardgame") ??
             new BoardgamesListDTO<HotnessBoardgameDTO>();
