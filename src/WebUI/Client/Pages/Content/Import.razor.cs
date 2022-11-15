@@ -67,7 +67,7 @@ namespace BoardGameTracker.Client.Pages.Content
                 await AuthenticationClient.UpdateBGGUsername(request);
             }
 
-            //var bgg_collection = await BGGClient.GetCollection(username);
+            var bgg_collection = await BGGClient.GetCollection(username);
             //var collection = await Client.GetCollection(userid);
 
             loading = false;

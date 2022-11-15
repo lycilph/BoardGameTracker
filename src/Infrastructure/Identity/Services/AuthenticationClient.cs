@@ -5,6 +5,7 @@ using BoardGameTracker.Application.Identity.Services;
 using BoardGameTracker.Application.Identity.Storage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Refit;
+using System.Net;
 
 namespace BoardGameTracker.Infrastructure.Identity.Services;
 
@@ -65,7 +66,8 @@ public class AuthenticationClient : IAuthenticationClient
     {
         var response = await client.UpdateBGGUsername(request);
 
-        if (response.IsSuccessStatusCode)
+        // If code is NoContent, this is a no-op from the controller, and the tokens doesn't need to be refreshed
+        if (response.IsSuccessStatusCode && response.StatusCode != HttpStatusCode.NoContent)
         {
             // The tokens needs to be updated here, as the bgg username claim is not there otherwise
             await RefreshToken();

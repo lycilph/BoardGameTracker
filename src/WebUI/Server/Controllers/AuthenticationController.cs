@@ -44,7 +44,9 @@ public class AuthenticationController : ApiControllerBase
     {
         var response = await Mediator.Send(new UpdateBGGUsernameCommand(request));
 
-        if (response.IsSuccessful)
+        if (response.IsNoOp)
+            return NoContent();
+        else if (response.IsSuccessful)
             return Ok(response);
         else
             return BadRequest(response.Errors.Any() ? response.Errors : response.Error);

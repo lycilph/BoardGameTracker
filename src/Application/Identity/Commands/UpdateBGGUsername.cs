@@ -45,8 +45,9 @@ public class UpdateBGGUsernameCommandHandler : IRequestHandler<UpdateBGGUsername
         {
             user.BGGUsername = request.BGGUsername;
             await identity_service.UpdateUserAsync(user);
+            return AuthenticationResponse.Success();
         }
 
-        return AuthenticationResponse.Success();
+        return AuthenticationResponse.NoOp();
     }
 }
