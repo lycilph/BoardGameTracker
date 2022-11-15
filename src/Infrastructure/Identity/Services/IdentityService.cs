@@ -35,6 +35,11 @@ public class IdentityService : IIdentityService
         return await user_manager.AddToRoleAsync(user, role);
     }
 
+    public async Task<ApplicationUser?> FindUserByIdAsync(string id)
+    {
+        return await user_manager.FindByIdAsync(id);
+    }
+
     public async Task<ApplicationUser?> FindUserByEmailAsync(string email)
     {
         return await user_manager.FindByEmailAsync(email);

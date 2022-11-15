@@ -13,4 +13,7 @@ public interface IAuthenticationClientInternal
 
     [Post("/RefreshToken")]
     Task<IApiResponse<AuthenticationResponse>> RefreshToken(RefreshTokenRequest request);
+
+    [Patch("/UpdateBGGUsername")]
+    Task<IApiResponse<AuthenticationResponse>> UpdateBGGUsername(UpdateBGGUsernameRequest request);
 }

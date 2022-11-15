@@ -38,4 +38,15 @@ public class AuthenticationController : ApiControllerBase
         else
             return BadRequest(response.Errors.Any() ? response.Errors : response.Error);
     }
+
+    [HttpPatch("UpdateBGGUsername")]
+    public async Task<IActionResult> UpdateBGGUsername([FromBody] UpdateBGGUsernameRequest request)
+    {
+        var response = await Mediator.Send(new UpdateBGGUsernameCommand(request));
+
+        if (response.IsSuccessful)
+            return Ok(response);
+        else
+            return BadRequest(response.Errors.Any() ? response.Errors : response.Error);
+    }
 }

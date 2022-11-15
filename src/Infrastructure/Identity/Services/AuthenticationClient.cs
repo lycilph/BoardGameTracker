@@ -1,4 +1,5 @@
-﻿using BoardGameTracker.Application.Identity;
+﻿using Azure.Core;
+using BoardGameTracker.Application.Identity;
 using BoardGameTracker.Application.Identity.DTO;
 using BoardGameTracker.Application.Identity.Services;
 using BoardGameTracker.Application.Identity.Storage;
@@ -28,7 +29,7 @@ public class AuthenticationClient : IAuthenticationClient
         {
             var content = response.Content!;
             await token_store.SetTokensAsync(content.Token, content.RefreshToken, request.RememberMe);
-            auth_provider.NotifyUserAuthentication(content.Token);
+            await auth_provider.NotifyUserAuthentication();
         }
 
         return response;
@@ -58,5 +59,19 @@ public class AuthenticationClient : IAuthenticationClient
     {
         await token_store.RemoveTokensAsync();
         auth_provider.NotifyUserLogout();
+    }
+
+    public async Task<IApiResponse<AuthenticationResponse>> UpdateBGGUsername(UpdateBGGUsernameRequest request)
+    {
+        var response = await client.UpdateBGGUsername(request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            // The tokens needs to be updated here, as the bgg username claim is not there otherwise
+            await RefreshToken();
+            await auth_provider.NotifyUserAuthentication();
+        }
+
+        return response;
     }
 }

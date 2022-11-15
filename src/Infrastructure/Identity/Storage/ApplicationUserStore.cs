@@ -30,11 +30,6 @@ public class ApplicationUserStore :
         throw new NotImplementedException();
     }
 
-    public Task<ApplicationUser?> FindByIdAsync(string userId, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
     public Task<bool> GetEmailConfirmedAsync(ApplicationUser user, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
@@ -175,6 +170,13 @@ public class ApplicationUserStore :
     #endregion Misc methods
 
     #region FindBy methods
+    public async Task<ApplicationUser?> FindByIdAsync(string userId, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        return await context.Users.GetAsync(userId, cancellationToken: cancellationToken);
+    }
+
     public async Task<ApplicationUser?> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();

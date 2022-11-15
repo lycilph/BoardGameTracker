@@ -9,4 +9,6 @@ public interface IAuthenticationClient
     Task<IApiResponse<AuthenticationResponse>> RegisterUser(RegisterRequest request);
     Task<IApiResponse<AuthenticationResponse>> RefreshToken();
     Task Logout();
+
+    Task<IApiResponse<AuthenticationResponse>> UpdateBGGUsername(UpdateBGGUsernameRequest request);
 }

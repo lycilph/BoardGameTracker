@@ -26,8 +26,9 @@ public class JwtAuthenticationStateProvider : AuthenticationStateProvider
         return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), AuthenticationTypeConstant.JwtAutenticationType)));
     }
 
-    public void NotifyUserAuthentication(string token)
+    public async Task NotifyUserAuthentication()
     {
+        var token = await token_store.GetTokenAsync();
         var claims = JwtParser.ParseClaimsFromJwt(token);
         var authenticated_user = new ClaimsPrincipal(new ClaimsIdentity(claims, AuthenticationTypeConstant.JwtAutenticationType));
         var state = Task.FromResult(new AuthenticationState(authenticated_user));
