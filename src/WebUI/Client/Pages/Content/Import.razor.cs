@@ -36,19 +36,9 @@ namespace BoardGameTracker.Client.Pages.Content
 
         protected override async Task OnInitializedAsync()
         {
-            loading = true;
-
             var auth_state = await AuthenticationStateTask;
             var user = auth_state.User;
-            var userid = user.GetUserId();
-
-            if (userid != null) 
-            {
-                profile = await Client.GetProfile(userid);
-                username = profile.LastUsedBGGUsername;
-            }
-
-            loading = false;
+            username = user.GetBGGUsername() ?? string.Empty;
         }
 
         private async void ImportFromBGG()
@@ -57,11 +47,11 @@ namespace BoardGameTracker.Client.Pages.Content
             loading = true;
 
             // Update the bgg username
-            if (!string.IsNullOrWhiteSpace(username))
-            {
-                profile.LastUsedBGGUsername = username;
-                await Client.UpdateProfile(profile);
-            }
+            //if (!string.IsNullOrWhiteSpace(username))
+            //{
+            //    profile.LastUsedBGGUsername = username;
+            //    await Client.UpdateProfile(profile);
+            //}
 
             //var bgg_collection = await BGGClient.GetCollection(username);
             //var collection = await Client.GetCollection(userid);

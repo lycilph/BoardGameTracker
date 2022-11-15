@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using BoardGameTracker.Application.Identity.Data;
+using System.Security.Claims;
 
 namespace BoardGameTracker.Application.Common.Extensions;
 
@@ -13,5 +14,10 @@ public static class PrincipalExtensions
     public static string? GetUserId(this ClaimsPrincipal principal)
     {
         return principal.FindFirstValue(ClaimTypes.NameIdentifier);
+    }
+
+    public static string? GetBGGUsername(this ClaimsPrincipal principal)
+    {
+        return principal.FindFirstValue(CustomClaims.BGGUsername);
     }
 }

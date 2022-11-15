@@ -58,6 +58,12 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterCommand, Authe
         if (!role_result.Succeeded)
             return AuthenticationResponse.Failure(create_result.Errors.Select(e => e.Description));
 
+        // BGG username
+        user.BGGUsername = request.BGGUsername;
+        var bgg_username_result = await identity_service.UpdateUserAsync(user);
+        if (!bgg_username_result.Succeeded)
+            return AuthenticationResponse.Failure(create_result.Errors.Select(e => e.Description));
+
         return AuthenticationResponse.Success();
     }
 }

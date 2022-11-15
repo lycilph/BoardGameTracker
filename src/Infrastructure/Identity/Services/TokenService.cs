@@ -39,6 +39,9 @@ public class TokenService : ITokenService
                 new Claim(ClaimTypes.IsPersistent, is_persistent.ToString())
             };
 
+        if (!string.IsNullOrWhiteSpace(user.BGGUsername))
+            claims.Add(new Claim(CustomClaims.BGGUsername, user.BGGUsername));
+
         var roles = await identity_service.GetRolesForUserAsync(user);
         foreach (var role in roles)
         {

@@ -1,9 +1,7 @@
 ﻿using BoardGameTracker.Application.Contracts;
 using BoardGameTracker.Application.Game.DTO;
-using BoardGameTracker.Application.Game.Services;
 using BoardGameTracker.Domain.Data;
 using MediatR;
-using Microsoft.Azure.Cosmos;
 
 namespace BoardGameTracker.Application.Game.Queries;
 
@@ -20,19 +18,22 @@ public class ProfileQueryHandler : IRequestHandler<ProfileQuery, Profile>
 
     public async Task<Profile> Handle(ProfileQuery request, CancellationToken cancellationToken)
     {
-        var pk = new PartitionKey(request.Id);
-        if (await store.ExistsAsync(request.Id, pk, cancellationToken)) 
-        { 
-            var dto = await store.GetAsync(request.Id, pk, cancellationToken);
-            return Mapping.Map(dto);
-        }
-        else
-        {
-            var profile = new Profile { Id = request.Id };
-            var dto = Mapping.Map(profile);
-            await store.UpdateAsync(dto, cancellationToken);
-            return profile;
-        }
+        //var pk = new PartitionKey(request.Id);
+        //if (await store.ExistsAsync(request.Id, pk, cancellationToken)) 
+        //{ 
+        //    var dto = await store.GetAsync(request.Id, pk, cancellationToken);
+        //    return Mapping.Map(dto);
+        //}
+        //else
+        //{
+        //    var profile = new Profile { Id = request.Id };
+        //    var dto = Mapping.Map(profile);
+        //    await store.UpdateAsync(dto, cancellationToken);
+        //    return profile;
+        //}
+
+        await Task.CompletedTask;
+        return new Profile();
     }
 }
 

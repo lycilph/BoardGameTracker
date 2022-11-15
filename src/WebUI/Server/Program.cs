@@ -62,6 +62,7 @@ public class Program
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
+            app.SeedIdentityData();
             app.UseWebAssemblyDebugging();
         }
         else

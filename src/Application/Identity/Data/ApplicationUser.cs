@@ -22,4 +22,5 @@ public class ApplicationUser : IdentityUser, IItem
     public List<string> RoleIds { get; set; } = new List<string>();
     public string RefreshToken { get; set; } = string.Empty;
     public DateTime RefreshTokenExpiryTime { get; set; } = DateTime.UtcNow;
+    public string BGGUsername { get; set; } = string.Empty;
 }

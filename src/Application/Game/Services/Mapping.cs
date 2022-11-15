@@ -9,8 +9,7 @@ public static class Mapping
     {
         return new ProfileDTO
         {
-            Id = profile.Id,
-            LastUsedBGGUsername= profile.LastUsedBGGUsername,
+            
         };
     }
 
@@ -18,8 +17,7 @@ public static class Mapping
     {
         return new Profile
         {
-            Id = dto.Id,
-            LastUsedBGGUsername = dto.LastUsedBGGUsername,
+            
         };
     }
 }

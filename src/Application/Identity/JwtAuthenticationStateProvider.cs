@@ -1,4 +1,5 @@
-﻿using BoardGameTracker.Application.Identity.Storage;
+﻿using BoardGameTracker.Application.Identity.Data;
+using BoardGameTracker.Application.Identity.Storage;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 
@@ -22,13 +23,13 @@ public class JwtAuthenticationStateProvider : AuthenticationStateProvider
         if (string.IsNullOrWhiteSpace(token))
             return anonymous;
 
-        return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), "jwtAuthType")));
+        return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), AuthenticationTypeConstant.JwtAutenticationType)));
     }
 
     public void NotifyUserAuthentication(string token)
     {
         var claims = JwtParser.ParseClaimsFromJwt(token);
-        var authenticated_user = new ClaimsPrincipal(new ClaimsIdentity(claims, "jwtAuthType"));
+        var authenticated_user = new ClaimsPrincipal(new ClaimsIdentity(claims, AuthenticationTypeConstant.JwtAutenticationType));
         var state = Task.FromResult(new AuthenticationState(authenticated_user));
         NotifyAuthenticationStateChanged(state);
     }
