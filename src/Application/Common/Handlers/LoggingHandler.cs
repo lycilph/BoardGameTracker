@@ -23,7 +23,7 @@ public class LoggingHandler : DelegatingHandler
         }
 
         var uri = request.RequestUri;
-        logger.LogInformation("HTTP {method} {uri} responded {code} in {time} ms", request.Method, uri, response.StatusCode, sw.ElapsedMilliseconds);
+        logger.LogInformation("HTTP (client) {method} {uri} responded {code} in {time} ms", request.Method, uri, response.StatusCode, sw.ElapsedMilliseconds);
 
         return response;
     }

@@ -4,12 +4,12 @@ using System.Security.Claims;
 
 namespace BoardGameTracker.Application.Identity;
 
-public class ApplicationAuthenticationStateProvider : AuthenticationStateProvider
+public class JwtAuthenticationStateProvider : AuthenticationStateProvider
 {
     private readonly ITokenStore token_store;
     private readonly AuthenticationState anonymous;
 
-    public ApplicationAuthenticationStateProvider(ITokenStore token_store)
+    public JwtAuthenticationStateProvider(ITokenStore token_store)
     {
         this.token_store = token_store;
 

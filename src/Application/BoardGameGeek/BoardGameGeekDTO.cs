@@ -28,6 +28,63 @@ public class HotnessBoardgameDTO
     public TextValuePairDTO thumbnail { get; set; } = new TextValuePairDTO();
 }
 
+[XmlType("item")]
+public class CollectionBoardgameDTO
+{
+    [XmlAttribute]
+    public string objectid { get; set; } = string.Empty;
+
+    public string name { get; set; } = string.Empty;
+    public string yearpublished { get; set; } = string.Empty;
+    public string image { get; set; } = string.Empty;
+    public string thumbnail { get; set; } = string.Empty;
+    public int numplays { get; set; }
+    public StatusDTO status { get; set; } = new StatusDTO();
+
+    public List<string> GetStatusList()
+    {
+        var result = new List<string>();
+
+        var skip = new List<string> { "text", "lastmodified" };
+        foreach (var info in typeof(StatusDTO).GetProperties())
+        {
+            if (!skip.Contains(info.Name) &&
+                int.TryParse(info.GetValue(status) as string, out int value) &&
+                value == 1)
+            {
+                result.Add(info.Name);
+            }
+        }
+
+        return result;
+    }
+}
+
+[XmlType("status")]
+public class StatusDTO
+{
+    [XmlText]
+    public string text { get; set; } = string.Empty;
+    [XmlAttribute]
+    public string own { get; set; } = string.Empty;
+    [XmlAttribute]
+    public string prevowned { get; set; } = string.Empty;
+    [XmlAttribute]
+    public string fortrade { get; set; } = string.Empty;
+    [XmlAttribute]
+    public string want { get; set; } = string.Empty;
+    [XmlAttribute]
+    public string wanttoplay { get; set; } = string.Empty;
+    [XmlAttribute]
+    public string wanttobuy { get; set; } = string.Empty;
+    [XmlAttribute]
+    public string wishlist { get; set; } = string.Empty;
+    [XmlAttribute]
+    public string preordered { get; set; } = string.Empty;
+    [XmlAttribute]
+    public string lastmodified { get; set; } = string.Empty;
+}
+
 public class TextValuePairDTO
 {
     [XmlText]

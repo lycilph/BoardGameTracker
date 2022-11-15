@@ -9,4 +9,9 @@ public static class PrincipalExtensions
         var claim = principal.FindFirst(ClaimTypes.IsPersistent);
         return claim != null && Convert.ToBoolean(claim.Value);
     }
+
+    public static string? GetUserId(this ClaimsPrincipal principal)
+    {
+        return principal.FindFirstValue(ClaimTypes.NameIdentifier);
+    }
 }

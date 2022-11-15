@@ -9,7 +9,7 @@
         </MudPaper>
     </MudItem>
     <MudItem xs="10" md="3" Class="mx-2">
-        <MudPaper Class="py-8" @onclick=@(() => NavigationManager.NavigateTo("/content/collection"))>
+        <MudPaper Class="cursor-pointer py-8" @onclick=@(() => NavigationManager.NavigateTo("/content/collection"))>
             <MudStack>
                 <MudText Align="Align.Center" Typo="Typo.h5">Collection</MudText>
                 <MudText Align="Align.Center"># Games in collection</MudText>
@@ -17,7 +17,7 @@
         </MudPaper>
     </MudItem>
     <MudItem xs="10" md="3" Class="mx-2">
-        <MudPaper Class="py-8">
+        <MudPaper Class="cursor-pointer py-8">
             <MudStack>
                 <MudText Align="Align.Center" Typo="Typo.h5">Plays</MudText>
                 <MudText Align="Align.Center"># plays logged</MudText>
@@ -25,7 +25,7 @@
         </MudPaper>
     </MudItem>
     <MudItem xs="10" md="3" Class="mx-2">
-        <MudPaper Class="py-8">
+        <MudPaper Class="cursor-pointer py-8">
             <MudStack>
                 <MudText Align="Align.Center" Typo="Typo.h5">Challenges</MudText>
                 <MudText Align="Align.Center"># Challenges open</MudText>
@@ -37,8 +37,7 @@
 <MudText Typo="Typo.h4" Class="mt-12">BoardGameGeek Hotness List</MudText>
 @if (!games.Any())
 {
-    <MudPaper Class="d-flex justify-center mud-width-full py-8"
-          Elevation=0>
+    <MudPaper Class="d-flex justify-center mud-width-full py-8" Elevation=0>
         <MudStack Row="true">
             @for (int i = 0; i < 3; i++)
             {

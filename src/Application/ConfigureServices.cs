@@ -22,7 +22,7 @@ public static class ConfigureServices
     {
         services.AddApplicationCommonServices();
 
-        services.AddScoped<AuthenticationStateProvider, ApplicationAuthenticationStateProvider>();
+        services.AddScoped<AuthenticationStateProvider, JwtAuthenticationStateProvider>();
 
         services.AddTransient<LoggingHandler>();
         services.AddTransient<AuthenticationHandler>();

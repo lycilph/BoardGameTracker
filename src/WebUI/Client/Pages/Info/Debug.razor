@@ -1,20 +1,14 @@
 ﻿@page "/info/debug"
 @using BoardGameTracker.Application.Common.Notifications;
-@using BoardGameTracker.Application.Services;
 @using MediatR;
 
 <h1>Debugging stuff</h1>
 
-<p>The current time is (Dummy): @time</p>
-
-<MudButton OnClick="UpdateTime">Update time</MudButton>
 <MudButton OnClick="SendMessage">Send snackbar Message</MudButton>
 
 @code {
     [Inject]
     public ILogger<Debug> Logger { get; set; } = null!;
-    [Inject]
-    public DummyService DummyService { get; set; } = null!;
     [Inject]
     public IPublisher Publisher { get; set; } = null!;
 
@@ -23,20 +17,5 @@
     private async Task SendMessage()
     {
         await Publisher.Publish(new SnackbarNotification("Message from debug page"));
-    }
-
-    private async Task UpdateTime()
-    {
-        try
-        {
-            time = await DummyService.GetTime();
-        }
-        catch (HttpRequestException e)
-        {
-            Logger.LogError("Error {error}", e.Message);
-            time = e.Message;
-        }
-
-        StateHasChanged();
     }
 }

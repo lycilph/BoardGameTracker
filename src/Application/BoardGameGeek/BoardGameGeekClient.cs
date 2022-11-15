@@ -18,4 +18,12 @@ public class BoardGameGeekClient
             new BoardgamesListDTO<HotnessBoardgameDTO>();
         return Mapping.Map(dtos);
     }
+
+    public async Task<List<BoardGame>> GetCollection(string username)
+    {
+        var query = $"collection?username={username}";
+        var dtos = await client.GetFromXmlAsync<BoardgamesListDTO<CollectionBoardgameDTO>>(query) ??
+            new BoardgamesListDTO<CollectionBoardgameDTO>();
+        return Mapping.Map(dtos);
+    }
 }

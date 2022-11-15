@@ -11,13 +11,13 @@ public class AuthenticationClient : IAuthenticationClient
 {
     private readonly IAuthenticationClientInternal client;
     private readonly ITokenStore token_store;
-    private readonly ApplicationAuthenticationStateProvider auth_provider;
+    private readonly JwtAuthenticationStateProvider auth_provider;
 
     public AuthenticationClient(IAuthenticationClientInternal client, ITokenStore token_store, AuthenticationStateProvider auth_provider)
     {
         this.client = client;
         this.token_store = token_store;
-        this.auth_provider = auth_provider as ApplicationAuthenticationStateProvider ?? throw new ArgumentException(nameof(AuthenticationStateProvider));
+        this.auth_provider = auth_provider as JwtAuthenticationStateProvider ?? throw new ArgumentException(nameof(AuthenticationStateProvider));
     }
 
     public async Task<IApiResponse<AuthenticationResponse>> Login(LoginRequest request)

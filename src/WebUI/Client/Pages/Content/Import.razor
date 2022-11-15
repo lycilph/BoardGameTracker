@@ -4,13 +4,20 @@
     <MudToolBar>
         <MudText Typo="Typo.h5">Import</MudText>
         <MudSpacer />
-        <MudTextField Clearable=true
+        <MudTextField @ref="input_ref"
+                      Clearable=true
                       Immediate=true
                       Placeholder="BoargGameGeek Username"
-                      Adornment="Adornment.End"
-                      AdornmentIcon="@Icons.Outlined.CloudDownload"
-                      IconSize="Size.Medium"
                       Class="mt-0"
-                      T="string" />
+                      @bind-Value="username"
+                      OnKeyPress="ImportOnEnterAsync" />
+        <MudIconButton Icon="@Icons.Outlined.CloudDownload"
+                       OnClick="ImportFromBGG" />
     </MudToolBar>
+    @if (loading)
+    {
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+    }
 </MudPaper>
+
+<MudOverlay Visible="loading" DarkBackground="true"/>

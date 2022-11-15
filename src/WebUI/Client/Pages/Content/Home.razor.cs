@@ -12,14 +12,10 @@ public partial class Home
     public BoardGameGeekClient Client { get; set; } = null!;
 
     private List<BoardGame> games = new();
-    private bool is_loading = false;
 
     protected override async Task OnInitializedAsync()
     {
-        is_loading = true;
         games = await Client.GetHotnessAsync();
-        is_loading = false;
-        
         StateHasChanged();
     }
 

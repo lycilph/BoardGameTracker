@@ -2,7 +2,6 @@ using BoardGameTracker.Application;
 using BoardGameTracker.Application.BoardGameGeek;
 using BoardGameTracker.Application.Common.Handlers;
 using BoardGameTracker.Application.Identity.Services;
-using BoardGameTracker.Application.Services;
 using BoardGameTracker.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Components.Web;
@@ -16,6 +15,7 @@ using System.Reflection;
 using Polly.Extensions.Http;
 using Polly;
 using System.Net;
+using BoardGameTracker.Application.Game.Services;
 
 namespace BoardGameTracker.Client;
 
@@ -40,15 +40,14 @@ public class Program
         // There is a bug right now in the Serilog.Sinks.BrowserConsole package (see issue here: https://github.com/serilog/serilog-sinks-browserconsole/issues/20)
         //Log.ForContext<Program>().Information("Starting web app");
 
-        builder.Services.AddHttpClient<DummyService>(
-            c => c.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress + "api/"))
-            .AddHttpMessageHandler<LoggingHandler>()
-            .AddHttpMessageHandler<AuthenticationHandler>();
-
         builder.Services
             .AddRefitClient<IAuthenticationClientInternal>()
             .ConfigureHttpClient(c => c.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress + "api/authentication"))
             .AddHttpMessageHandler<LoggingHandler>();
+
+        builder.Services.AddHttpClient<GameClient>(
+            c => c.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress + "api/game/"))
+            .AddHttpMessageHandler<AuthenticationHandler>();
 
         builder.Services.AddHttpClient<BoardGameGeekClient>(
             c => c.BaseAddress = new Uri("https://boardgamegeek.com/xmlapi2/"))
@@ -74,7 +73,7 @@ public class Program
         var cache_policy = Policy
             .CacheAsync<HttpResponseMessage>(
                 cache_provider,
-                new SlidingTtl(TimeSpan.FromSeconds(60)),
+                new SlidingTtl(TimeSpan.FromSeconds(600)),
                 onCachePut: (context, key) => logger.LogInformation($"Caching '{key}'."),
                 onCacheGet: (context, key) => logger.LogInformation($"Retrieving '{key}' from the cache."),
                 onCachePutError: (context, key, exception) => logger.LogWarning(exception, $"Cannot add '{key}' to the cache."),
@@ -85,9 +84,12 @@ public class Program
         var retry_policy = HttpPolicyExtensions
             .HandleTransientHttpError()
             .OrResult(msg => msg.StatusCode == HttpStatusCode.Accepted)
-            .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+        .WaitAndRetryAsync(3, retryAttempt =>
+        {
+            logger.LogInformation("Retrying request");
+            return TimeSpan.FromSeconds(Math.Pow(2, retryAttempt));
+        });
         registry.Add(RetryPolicyKey, retry_policy);
-
 
         await host.RunAsync();
     }
