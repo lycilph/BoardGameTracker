@@ -13,9 +13,7 @@ public static class Mapping
             Name = game.Name,
             YearPublished = game.YearPublished,
             Image = game.Image,
-            Thumbnail = game.Thumbnail,
-            NumberOfPlays = game.NumberOfPlays,
-            Status = game.Status
+            Thumbnail = game.Thumbnail
         };
     }
 
@@ -27,9 +25,7 @@ public static class Mapping
             Name = dto.Name,
             YearPublished = dto.YearPublished,
             Image = dto.Image,
-            Thumbnail = dto.Thumbnail,
-            NumberOfPlays = dto.NumberOfPlays,
-            Status = dto.Status
+            Thumbnail = dto.Thumbnail
         };
     }
 

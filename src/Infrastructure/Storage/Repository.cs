@@ -3,6 +3,7 @@ using BoardGameTracker.Infrastructure.Contracts;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
 using System.Linq.Expressions;
 using System.Net;
 
@@ -93,9 +94,14 @@ public class Repository<TItem> : IRepository<TItem> where TItem : IItem
 
     public async Task<IEnumerable<TItem>> GetAsync(IEnumerable<string> ids, CancellationToken cancellationToken = default)
     {
-        var tasks = ids.Select(id => GetAsync(id, cancellationToken: cancellationToken)).ToList();
-        _ = await Task.WhenAll(tasks).ConfigureAwait(false);
-        return tasks.Select(t => t.Result);
+        var result = new List<TItem>();
+        foreach (var chunk in ids.Chunk(ChunkSize))
+        {
+            var tasks = chunk.Select(id => GetAsync(id, cancellationToken: cancellationToken)).ToList();
+            await Task.WhenAll(tasks);
+            result.AddRange(tasks.Select(x => x.Result));
+        }
+        return result;
     }
 
     public async Task<TItem> UpdateAsync(TItem value, CancellationToken cancellationToken = default)

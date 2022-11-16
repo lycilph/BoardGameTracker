@@ -1,17 +1,21 @@
 ﻿using BoardGameTracker.Application.Contracts;
-using BoardGameTracker.Domain.Data;
 using Newtonsoft.Json;
 
 namespace BoardGameTracker.Application.Game.DTO;
 
 [ContainerInfo("Games", "/id")]
-public class BoardGameDTO : BoardGame, IItem
+public class BoardGameDTO : IItem
 {
     [JsonProperty("id")]
-    public new string Id { get; set; } = Guid.NewGuid().ToString();
+    public string Id { get; set; } = Guid.NewGuid().ToString();
     [JsonProperty("type")]
     public string Type { get; set; } = nameof(ProfileDTO);
 
     string IItem.PartitionKey => GetPartitionKeyValue();
     protected virtual string GetPartitionKeyValue() => Id;
+
+    public string Name { get; set; } = string.Empty;
+    public string YearPublished { get; set; } = string.Empty;
+    public string Image { get; set; } = string.Empty;
+    public string Thumbnail { get; set; } = string.Empty;
 }

@@ -50,7 +50,18 @@ public class CollectionQueryHandler : IRequestHandler<CollectionQuery, GameRespo
         if (profile == null)
             return GameResponse.Failure($"No profile found for {query.UserId}");
 
-        var games = await game_store.GetAsync(profile.BoardGameIds, cancellationToken);
+
+        IEnumerable<BoardGameDTO> games;
+        try
+        {
+            games = await game_store.GetAsync(profile.BoardGameIds, cancellationToken);
+        }
+        catch (CosmosException e)
+        {
+            logger.LogError(e.Message);
+            games = new List<BoardGameDTO>();
+        }
+
         return GameResponse.Success(games);
     }
 }
