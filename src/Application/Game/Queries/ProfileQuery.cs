@@ -1,13 +1,12 @@
 ﻿using BoardGameTracker.Application.Contracts;
 using BoardGameTracker.Application.Game.DTO;
-using BoardGameTracker.Domain.Data;
 using MediatR;
 
 namespace BoardGameTracker.Application.Game.Queries;
 
-public record class ProfileQuery(string Id) : IRequest<Profile>;
+public record class ProfileQuery(string Id) : IRequest<ProfileDTO>;
 
-public class ProfileQueryHandler : IRequestHandler<ProfileQuery, Profile>
+public class ProfileQueryHandler : IRequestHandler<ProfileQuery, ProfileDTO>
 {
     private readonly IRepository<ProfileDTO> store;
 
@@ -16,23 +15,11 @@ public class ProfileQueryHandler : IRequestHandler<ProfileQuery, Profile>
         this.store = store;
     }
 
-    public async Task<Profile> Handle(ProfileQuery request, CancellationToken cancellationToken)
+    public async Task<ProfileDTO> Handle(ProfileQuery request, CancellationToken cancellationToken)
     {
-        //var pk = new PartitionKey(request.Id);
-        //if (await store.ExistsAsync(request.Id, pk, cancellationToken)) 
-        //{ 
-        //    var dto = await store.GetAsync(request.Id, pk, cancellationToken);
-        //    return Mapping.Map(dto);
-        //}
-        //else
-        //{
-        //    var profile = new Profile { Id = request.Id };
-        //    var dto = Mapping.Map(profile);
-        //    await store.UpdateAsync(dto, cancellationToken);
-        //    return profile;
-        //}
+        if (await store.ExistsAsync(request.Id, cancellationToken: cancellationToken))
+            return await store.GetAsync(request.Id, cancellationToken: cancellationToken);
 
-        await Task.CompletedTask;
-        return new Profile();
+        return new ProfileDTO { Id = request.Id };
     }
 }

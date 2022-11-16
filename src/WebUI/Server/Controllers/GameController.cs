@@ -10,10 +10,10 @@ namespace BoardGameTracker.Server.Controllers;
 [Authorize(Roles = RoleConstants.UserRole)]
 public class GameController : ApiControllerBase
 {
-    [HttpGet("Collection/{userid}")]
-    public async Task<IActionResult> Collection(string userid)
+    [HttpGet("Collection/{id}")]
+    public async Task<IActionResult> GetCollection(string id)
     {
-        var response = await Mediator.Send(new CollectionQuery(userid));
+        var response = await Mediator.Send(new CollectionQuery(id));
 
         if (response.IsSuccessful)
             return Ok(response.Games);
@@ -32,21 +32,11 @@ public class GameController : ApiControllerBase
             return NotFound(response.Errors.Any() ? response.Errors : response.Error);
     }
 
+    [HttpGet("Profile/{id}")]
+    public async Task<IActionResult> GetProfile(string id)
+    {
+        var profile = await Mediator.Send(new ProfileQuery(id));
 
-
-    //[HttpGet("Profile/{id}")]
-    //public async Task<IActionResult> Profile(string id)
-    //{
-    //    var profile = await Mediator.Send(new ProfileQuery(id));
-
-    //    return Ok(profile);
-    //}
-
-    //[HttpPut("Profile")]
-    //public async Task<IActionResult> UpdateProfile([FromBody] Profile profile)
-    //{
-    //    await Mediator.Send(new UpdateProfileCommand(profile));
-
-    //    return Ok();
-    //}
+        return Ok(profile);
+    }
 }

@@ -30,7 +30,7 @@ public class GameClient
         return new();
     }
 
-    public async Task UpdateGamesAsync(string userid, List<BoardGame> games)
+    public async Task UpdateCollectionAsync(string userid, List<BoardGame> games)
     {
         var dtos = Mapping.Map(games);
         var update_request = new UpdateCollectionRequest { UserId = userid, Games = dtos };
@@ -41,23 +41,16 @@ public class GameClient
         };
 
         await client.SendAsync(request);
+    }
 
-        await Task.CompletedTask;
+    public async Task<Profile> GetProfile(string userid)
+    {
+        var dto = await client.GetFromJsonAsync<ProfileDTO>($"Profile/{userid}") ?? 
+            new ProfileDTO { Id = userid };
+        return Mapping.Map(dto);
     }
 
     //public List<Play> GetPlays(string userid) => new();
     //public void LogPlay() { }
     //public void UpdatePlay(string playid, Play play) { }
-
-    //public async Task<Profile> GetProfile(string userid)
-    //{
-    //    return await client.GetFromJsonAsync<Profile>($"Profile/{userid}") ?? new Profile();
-    //}
-
-    //public async Task UpdateProfile(Profile profile)
-    //{
-    //    var request = new HttpRequestMessage(HttpMethod.Put, $"profile");
-    //    request.Content = JsonContent.Create(profile);
-    //    await client.SendAsync(request);
-    //}
 }

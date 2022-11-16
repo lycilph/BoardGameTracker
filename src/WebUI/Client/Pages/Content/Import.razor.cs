@@ -112,7 +112,7 @@ namespace BoardGameTracker.Client.Pages.Content
             if (games_to_remove_selected.Any())
                 owned_games.RemoveAll(g => games_to_remove_selected.Contains(g, comparer));
 
-            await GameClient.UpdateGamesAsync(userid, owned_games);
+            await GameClient.UpdateCollectionAsync(userid, owned_games);
 
             owned_games.Clear();
             games_to_add.Clear();

@@ -9,7 +9,7 @@ public class BoardGameDTO : IItem
     [JsonProperty("id")]
     public string Id { get; set; } = Guid.NewGuid().ToString();
     [JsonProperty("type")]
-    public string Type { get; set; } = nameof(ProfileDTO);
+    public string Type { get; set; } = nameof(BoardGameDTO);
 
     string IItem.PartitionKey => GetPartitionKeyValue();
     protected virtual string GetPartitionKeyValue() => Id;
