@@ -1,7 +1,6 @@
 using BoardGameTracker.Application.BoardGameGeek;
 using BoardGameTracker.Application.Common.Extensions;
 using BoardGameTracker.Application.Game.Services;
-using BoardGameTracker.Application.Identity.DTO;
 using BoardGameTracker.Application.Identity.Services;
 using BoardGameTracker.Domain.Data;
 using Microsoft.AspNetCore.Components;
@@ -21,9 +20,9 @@ namespace BoardGameTracker.Client.Pages.Content
         [Inject]
         public BoardGameGeekClient BGGClient { get; set; } = null!;
         [Inject]
-        public GameClient Client { get; set; } = null!;
+        public GameClient GameClient { get; set; } = null!;
         [Inject]
-        public IAuthenticationClient AuthenticationClient { get; set; } = null!;
+        public IIdentityClient IdentityClient { get; set; } = null!;
         [Inject]
         public ISnackbar Snackbar { get; set; } = null!;
 
@@ -69,10 +68,7 @@ namespace BoardGameTracker.Client.Pages.Content
 
             // Update the BGG username
             if (!string.IsNullOrWhiteSpace(username))
-            {
-                var request = new UpdateBGGUsernameRequest { UserId = userid, BGGUsername = username };
-                await AuthenticationClient.UpdateBGGUsername(request);
-            }
+                await IdentityClient.UpdateBGGUsername(userid, username);
 
             // Check if user exists on bgg
             if (!await BGGClient.UserExists(username))
@@ -88,7 +84,7 @@ namespace BoardGameTracker.Client.Pages.Content
             var bgg_owned_games = bgg_collection.Where(g => g.IsOwned()).ToList();
 
             // Load profile from DB
-            owned_games = await Client.GetCollectionAsync(userid);
+            owned_games = await GameClient.GetCollectionAsync(userid);
 
             // Compare BGG and DB
             var comparer = new BoardGameComparer();
@@ -116,7 +112,7 @@ namespace BoardGameTracker.Client.Pages.Content
             if (games_to_remove_selected.Any())
                 owned_games.RemoveAll(g => games_to_remove_selected.Contains(g, comparer));
 
-            await Client.UpdateGamesAsync(userid, owned_games);
+            await GameClient.UpdateGamesAsync(userid, owned_games);
 
             owned_games.Clear();
             games_to_add.Clear();

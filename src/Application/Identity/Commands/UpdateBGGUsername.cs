@@ -2,12 +2,10 @@
 using BoardGameTracker.Application.Identity.Services;
 using FluentValidation;
 using MediatR;
-using Newtonsoft.Json.Linq;
-using System.ComponentModel.DataAnnotations;
 
 namespace BoardGameTracker.Application.Identity.Commands;
 
-public record class UpdateBGGUsernameCommand(UpdateBGGUsernameRequest Request) : IRequest<AuthenticationResponse>;
+public record class UpdateBGGUsernameCommand(UpdateBGGUsernameRequest Request) : IRequest<UpdateBGGUsernameResponse>;
 
 public class UpdateBGGUsernameCommandValidator : AbstractValidator<UpdateBGGUsernameCommand>
 {
@@ -18,7 +16,7 @@ public class UpdateBGGUsernameCommandValidator : AbstractValidator<UpdateBGGUser
     }
 }
 
-public class UpdateBGGUsernameCommandHandler : IRequestHandler<UpdateBGGUsernameCommand, AuthenticationResponse>
+public class UpdateBGGUsernameCommandHandler : IRequestHandler<UpdateBGGUsernameCommand, UpdateBGGUsernameResponse>
 {
     private readonly IValidator<UpdateBGGUsernameCommand> validator;
     private readonly IIdentityService identity_service;
@@ -29,25 +27,25 @@ public class UpdateBGGUsernameCommandHandler : IRequestHandler<UpdateBGGUsername
         this.identity_service = identity_service;
     }
 
-    public async Task<AuthenticationResponse> Handle(UpdateBGGUsernameCommand command, CancellationToken cancellationToken)
+    public async Task<UpdateBGGUsernameResponse> Handle(UpdateBGGUsernameCommand command, CancellationToken cancellationToken)
     {
         var validation_result = await validator.ValidateAsync(command, cancellationToken);
         if (!validation_result.IsValid)
-            return AuthenticationResponse.Failure(validation_result.Errors.Select(e => e.ErrorMessage));
+            return UpdateBGGUsernameResponse.Failure(validation_result.Errors.Select(e => e.ErrorMessage));
 
         var request = command.Request;
 
         var user = await identity_service.FindUserByIdAsync(request.UserId);
         if (user == null)
-            return AuthenticationResponse.Failure("Unknown user");
+            return UpdateBGGUsernameResponse.Failure("Unknown user");
 
         if (user.BGGUsername != request.BGGUsername)
         {
             user.BGGUsername = request.BGGUsername;
             await identity_service.UpdateUserAsync(user);
-            return AuthenticationResponse.Success();
+            return UpdateBGGUsernameResponse.Success();
         }
 
-        return AuthenticationResponse.NoOp();
+        return UpdateBGGUsernameResponse.NoOp();
     }
 }

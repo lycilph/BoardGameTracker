@@ -21,6 +21,6 @@ public partial class Home
 
     private void GameClick(BoardGame game)
     {
-        Logger.LogInformation($"Clicked {game.Name}");
+        Logger.LogInformation("Clicked {game}", game.Name);
     }
 }

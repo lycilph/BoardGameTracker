@@ -1,11 +1,9 @@
-﻿using Azure.Core;
-using BoardGameTracker.Application.Identity;
+﻿using BoardGameTracker.Application.Identity;
 using BoardGameTracker.Application.Identity.DTO;
 using BoardGameTracker.Application.Identity.Services;
 using BoardGameTracker.Application.Identity.Storage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Refit;
-using System.Net;
 
 namespace BoardGameTracker.Infrastructure.Identity.Services;
 
@@ -60,20 +58,5 @@ public class AuthenticationClient : IAuthenticationClient
     {
         await token_store.RemoveTokensAsync();
         auth_provider.NotifyUserLogout();
-    }
-
-    public async Task<IApiResponse<AuthenticationResponse>> UpdateBGGUsername(UpdateBGGUsernameRequest request)
-    {
-        var response = await client.UpdateBGGUsername(request);
-
-        // If code is NoContent, this is a no-op from the controller, and the tokens doesn't need to be refreshed
-        if (response.IsSuccessStatusCode && response.StatusCode != HttpStatusCode.NoContent)
-        {
-            // The tokens needs to be updated here, as the bgg username claim is not there otherwise
-            await RefreshToken();
-            await auth_provider.NotifyUserAuthentication();
-        }
-
-        return response;
     }
 }

@@ -6,7 +6,6 @@ using BoardGameTracker.Server;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Text;
 
@@ -26,59 +25,10 @@ public class Program
         // Add services to the container.
         builder.Services.AddControllersWithViews();
         builder.Services.AddRazorPages();
+        builder.Services.AddSwagger();
         builder.Services.AddApplicationServerServices();
         builder.Services.AddInfrastructureServerServices(builder.Configuration);
-
-        builder.Services.AddSwaggerGen(
-            options =>
-            {
-                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    Description = "JWT Authorization header using the Bearer scheme",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.Http,
-                    Name = "Authorization",
-                    Scheme = "Bearer"
-                });
-                options.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Id = "Bearer",
-                            Type = ReferenceType.SecurityScheme
-                        }
-                    }, new List<string>()
-                    }
-                });
-            });
-
-        // This must be done here and not in the infrastructure project, otherwise the Client project cannot build
-        var jwtSettings = builder.Configuration.GetSection(JWTSettings.Key);
-        builder.Services
-            .AddAuthentication(
-                opt =>
-                {
-                    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-            .AddJwtBearer(
-                options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = jwtSettings["ValidIssuer"],
-                        ValidAudience = jwtSettings["ValidAudience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecurityKey"]!)),
-                        //ClockSkew = TimeSpan.Zero // This is ONLY for debugging
-                    };
-                });
+        builder.Services.AddJwtAuthentication(builder.Configuration.GetSection(JWTSettings.Key));
 
         // Easier to control what to include if done here (and not in ConfigureServices)
         builder.Services.AddMediatR(typeof(LoginCommand).Assembly);
