@@ -2,6 +2,7 @@
 using BoardGameTracker.Infrastructure.Contracts;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Linq;
+using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 using System.Net;
 
@@ -9,14 +10,18 @@ namespace BoardGameTracker.Infrastructure.Storage;
 
 public class Repository<TItem> : IRepository<TItem> where TItem : IItem
 {
-    private readonly Container container;
+    private const int ChunkSize = 50;
 
-    public Repository(ICosmosDBContainerFactory container_factory)
+    private readonly Container container;
+    private readonly ILogger<Repository<TItem>> logger;
+
+    public Repository(ICosmosDBContainerFactory container_factory, ILogger<Repository<TItem>> logger)
     {
         var attribute = Attribute.GetCustomAttribute(typeof(TItem), typeof(ContainerInfoAttribute));
         var info = attribute as ContainerInfoAttribute ?? throw new ArgumentException(nameof(ContainerInfoAttribute));
 
         container = container_factory.GetContainerAsync(info.Name, info.PartitionKey).Result;
+        this.logger = logger;
     }
 
     public async Task<TItem> CreateAsync(TItem value, CancellationToken cancellationToken = default)
@@ -101,5 +106,33 @@ public class Repository<TItem> : IRepository<TItem> where TItem : IItem
                 .ConfigureAwait(false);
 
         return response.Resource;
+    }
+
+    public async Task UpdateAsync(IEnumerable<TItem> values, CancellationToken cancellationToken = default)
+    {
+        foreach (var chunk in values.Chunk(ChunkSize))
+        {
+            var tasks = new List<Task<TItem>>(ChunkSize);
+            foreach (var item in chunk)
+            {
+                tasks.Add(
+                    container
+                    .UpsertItemAsync(item, new PartitionKey(item.PartitionKey), null, cancellationToken)
+                    .ContinueWith(
+                        response =>
+                        {
+                            if (!response.IsCompletedSuccessfully)
+                            {
+                                var innerExceptions = response.Exception!.Flatten();
+                                if (innerExceptions.InnerExceptions.FirstOrDefault(innerEx => innerEx is CosmosException) is CosmosException cosmosException)
+                                    logger.LogError($"Received {cosmosException.StatusCode} ({cosmosException.Message}).");
+                                else
+                                    logger.LogError($"Exception {innerExceptions.InnerExceptions.FirstOrDefault()}.");
+                            }
+                            return response.Result.Resource;
+                        }));
+            }
+            await Task.WhenAll(tasks);
+        }
     }
 }

@@ -8,11 +8,10 @@
                       Clearable=true
                       Immediate=true
                       Placeholder="BoargGameGeek Username"
-                      Class="mt-0"
+                      Class="mt-0 mx-8"
                       @bind-Value="username"
-                      OnKeyPress="ImportOnEnterAsync" />
-        <MudIconButton Icon="@Icons.Outlined.CloudDownload"
-                       OnClick="ImportFromBGG" />
+                      OnKeyPress="LoadOnEnterAsync" />
+        <MudButton OnClick="LoadFromBGG">Check</MudButton>
     </MudToolBar>
     @if (loading)
     {
@@ -20,4 +19,106 @@
     }
 </MudPaper>
 
-<MudOverlay Visible="loading" DarkBackground="true"/>
+<MudOverlay Visible="loading" DarkBackground="true" />
+
+<MudExpansionPanels>
+    @if (games_to_add.Any())
+    {
+        <MudExpansionPanel Text="Games to add">
+            <TitleContent>
+                <div class="d-flex">
+                    <MudText Class="mt-1">Games to add</MudText>
+                    <MudText Class="d-flex ml-auto mt-1 mr-4" Color="Color.Info">@games_to_add_selected.Count/@games_to_add.Count</MudText>
+                </div>
+            </TitleContent>
+            <ChildContent>
+                <MudTable Items="@games_to_add"
+                      @bind-SelectedItems="games_to_add_selected"
+                      MultiSelection="true"
+                      Hover="true"
+                      Elevation="0">
+                    <HeaderContent>
+                        <MudTh>Name</MudTh>
+                        <MudTh Style="text-align:right">Action</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Nr">@context.Name</MudTd>
+                        <MudTd Style="text-align:right"><MudChip Variant="Variant.Text" Color="Color.Info">Add</MudChip></MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager PageSizeOptions="new int[]{10, 50, 100}" />
+                    </PagerContent>
+                </MudTable>
+            </ChildContent>
+        </MudExpansionPanel>
+    }
+    @if (games_to_remove.Any())
+    {
+        <MudExpansionPanel Text="Games to remove">
+            <TitleContent>
+                <div class="d-flex">
+                    <MudText Class="mt-1">Games to remove</MudText>
+                    <MudText Class="d-flex ml-auto mt-1 mr-4" Color="Color.Warning">@games_to_remove_selected.Count/@games_to_remove.Count</MudText>
+                </div>
+            </TitleContent>
+            <ChildContent>
+                <MudTable Items="@games_to_remove"
+                      @bind-SelectedItems="games_to_remove_selected"
+                      MultiSelection="true"
+                      Hover="true"
+                      Elevation="0">
+                    <HeaderContent>
+                        <MudTh>Name</MudTh>
+                        <MudTh Style="text-align:right">Action</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Nr">@context.Name</MudTd>
+                        <MudTd Style="text-align:right"><MudChip Variant="Variant.Text" Color="Color.Warning">Remove</MudChip></MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager PageSizeOptions="new int[]{10, 50, 100}" />
+                    </PagerContent>
+                </MudTable>
+            </ChildContent>
+        </MudExpansionPanel>
+    }
+    @if (games_in_collection.Any())
+    {
+        <MudExpansionPanel>
+            <TitleContent>
+                <div class="d-flex">
+                    <MudText Class="mt-1">Games in collection</MudText>
+                    <MudText Class="d-flex ml-auto mt-1 mr-4">@games_in_collection.Count</MudText>
+                </div>
+            </TitleContent>
+            <ChildContent>
+                <MudTable Items="@games_in_collection"
+                      Hover="true"
+                      Elevation="0">
+                    <HeaderContent>
+                        <MudTh>Name</MudTh>
+                        <MudTh Style="text-align:right">Status</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Nr">@context.Name</MudTd>
+                        <MudTd Style="text-align:right"><MudChip Variant="Variant.Text">In Collection</MudChip></MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager PageSizeOptions="new int[]{10, 50, 100}" />
+                    </PagerContent>
+                </MudTable>
+            </ChildContent>
+        </MudExpansionPanel>
+    }
+</MudExpansionPanels>
+
+
+<MudPaper Elevation="25" Class="mt-2 pa-2 d-flex justify-end align-center">
+    <MudText Class="mr-8">Changes to synchronize: add @games_to_add_selected.Count/remove @games_to_remove_selected.Count</MudText>
+    <MudButton Variant="Variant.Filled"
+               Color="Color.Primary"
+               Disabled="@DisableSync"
+               @onclick="ImportGames">
+        Import
+    </MudButton>
+</MudPaper>

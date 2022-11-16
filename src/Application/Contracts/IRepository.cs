@@ -18,4 +18,5 @@ public interface IRepository<TItem> where TItem : IItem
     Task<IEnumerable<TItem>> GetAsync(IEnumerable<string> ids, CancellationToken cancellationToken = default);
 
     Task<TItem> UpdateAsync(TItem value, CancellationToken cancellationToken = default);
+    Task UpdateAsync(IEnumerable<TItem> values, CancellationToken cancellationToken = default);
 }

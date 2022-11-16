@@ -1,5 +1,5 @@
 ﻿using BoardGameTracker.Application.Common.Extensions;
-using BoardGameTracker.Data;
+using BoardGameTracker.Domain.Data;
 
 namespace BoardGameTracker.Application.BoardGameGeek;
 

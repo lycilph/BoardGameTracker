@@ -1,6 +1,5 @@
 ﻿using BoardGameTracker.Application.Contracts;
 using BoardGameTracker.Application.Game.DTO;
-using BoardGameTracker.Application.Game.Services;
 using BoardGameTracker.Domain.Data;
 using MediatR;
 
@@ -19,9 +18,10 @@ public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand,
 
     public async Task<Unit> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
     {
-        var dto = Mapping.Map(request.profile);
-        await store.UpdateAsync(dto, cancellationToken);
+        //var dto = Mapping.Map(request.profile);
+        //await store.UpdateAsync(dto, cancellationToken);
 
+        await Task.CompletedTask;
         return Unit.Value;
     }
 }

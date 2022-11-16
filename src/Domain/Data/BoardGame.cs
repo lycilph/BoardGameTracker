@@ -1,4 +1,4 @@
-﻿namespace BoardGameTracker.Data;
+﻿namespace BoardGameTracker.Domain.Data;
 
 public class BoardGame
 {

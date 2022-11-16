@@ -1,5 +1,5 @@
 using BoardGameTracker.Application.BoardGameGeek;
-using BoardGameTracker.Data;
+using BoardGameTracker.Domain.Data;
 using Microsoft.AspNetCore.Components;
 
 namespace BoardGameTracker.Client.Pages.Content;

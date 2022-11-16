@@ -1,4 +1,4 @@
-﻿using BoardGameTracker.Data;
+﻿using BoardGameTracker.Domain.Data;
 
 namespace BoardGameTracker.Application.BoardGameGeek;
 

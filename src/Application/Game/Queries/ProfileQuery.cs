@@ -9,7 +9,7 @@ public record class ProfileQuery(string Id) : IRequest<Profile>;
 
 public class ProfileQueryHandler : IRequestHandler<ProfileQuery, Profile>
 {
-    private IRepository<ProfileDTO> store;
+    private readonly IRepository<ProfileDTO> store;
 
     public ProfileQueryHandler(IRepository<ProfileDTO> store)
     {
@@ -36,4 +36,3 @@ public class ProfileQueryHandler : IRequestHandler<ProfileQuery, Profile>
         return new Profile();
     }
 }
-
