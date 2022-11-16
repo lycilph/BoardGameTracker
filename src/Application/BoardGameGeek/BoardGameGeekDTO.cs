@@ -5,6 +5,23 @@ namespace BoardGameTracker.Application.BoardGameGeek;
 // Disables naming violations
 #pragma warning disable IDE1006
 
+[XmlRoot("user")]
+public class BoardGameGeekUserDTO
+{
+    [XmlAttribute]
+    public string id { get; set; } = string.Empty;
+    [XmlAttribute]
+    public string name { get; set; } = string.Empty;
+
+    public TextValuePairDTO firstname { get; set; } = new TextValuePairDTO();
+    public TextValuePairDTO lastname { get; set; } = new TextValuePairDTO();
+    public TextValuePairDTO yearregistered { get; set; } = new TextValuePairDTO();
+    public TextValuePairDTO lastlogin { get; set; } = new TextValuePairDTO();
+    public TextValuePairDTO avatarlink { get; set; } = new TextValuePairDTO();
+    public TextValuePairDTO country { get; set; } = new TextValuePairDTO();
+    public TextValuePairDTO webaddress { get; set; } = new TextValuePairDTO();
+}
+
 [XmlRoot("items")]
 public class BoardgamesListDTO<TGame>
 {
@@ -20,11 +37,8 @@ public class HotnessBoardgameDTO
     [XmlAttribute]
     public int rank { get; set; }
 
-    [XmlElement("name")]
     public TextValuePairDTO name { get; set; } = new TextValuePairDTO();
-    [XmlElement("yearpublished")]
     public TextValuePairDTO yearpublished { get; set; } = new TextValuePairDTO();
-    [XmlElement("thumbnail")]
     public TextValuePairDTO thumbnail { get; set; } = new TextValuePairDTO();
 }
 

@@ -75,6 +75,13 @@ namespace BoardGameTracker.Client.Pages.Content
             }
 
             // Check if user exists on bgg
+            if (!await BGGClient.UserExists(username))
+            {
+                Snackbar.Add($"Cannot find User {username} on BoardGameGeek");
+                loading = false;
+                StateHasChanged();
+                return;
+            }
 
             // Load games from BGG
             var bgg_collection = await BGGClient.GetCollection(username);
