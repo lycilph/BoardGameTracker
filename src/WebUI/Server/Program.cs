@@ -6,6 +6,7 @@ using BoardGameTracker.Server;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Text;
 
@@ -25,9 +26,34 @@ public class Program
         // Add services to the container.
         builder.Services.AddControllersWithViews();
         builder.Services.AddRazorPages();
-        builder.Services.AddSwaggerGen();
         builder.Services.AddApplicationServerServices();
         builder.Services.AddInfrastructureServerServices(builder.Configuration);
+
+        builder.Services.AddSwaggerGen(
+            options =>
+            {
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Name = "Authorization",
+                    Scheme = "Bearer"
+                });
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Id = "Bearer",
+                            Type = ReferenceType.SecurityScheme
+                        }
+                    }, new List<string>()
+                    }
+                });
+            });
 
         // This must be done here and not in the infrastructure project, otherwise the Client project cannot build
         var jwtSettings = builder.Configuration.GetSection(JWTSettings.Key);
@@ -76,7 +102,7 @@ public class Program
         app.UseSwaggerUI();
 
         app.UseSeriLogging();
- 
+
         app.UseHttpsRedirection();
 
         app.UseBlazorFrameworkFiles();
