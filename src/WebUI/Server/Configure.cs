@@ -1,7 +1,6 @@
 ﻿using Serilog.Events;
 using Serilog;
 using Microsoft.OpenApi.Models;
-using BoardGameTracker.Infrastructure.Config;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;

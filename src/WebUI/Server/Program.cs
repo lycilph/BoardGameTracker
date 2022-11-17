@@ -4,10 +4,7 @@ using BoardGameTracker.Infrastructure;
 using BoardGameTracker.Infrastructure.Config;
 using BoardGameTracker.Server;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using Serilog;
-using System.Text;
 
 namespace BoardGameTracker;
 

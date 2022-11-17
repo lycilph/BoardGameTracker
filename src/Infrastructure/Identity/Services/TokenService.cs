@@ -1,4 +1,5 @@
-﻿using BoardGameTracker.Application.Identity.Data;
+﻿using BoardGameTracker.Application.Common.Extensions;
+using BoardGameTracker.Application.Identity.Data;
 using BoardGameTracker.Application.Identity.Services;
 using BoardGameTracker.Infrastructure.Config;
 using Microsoft.Extensions.Options;
@@ -39,7 +40,7 @@ public class TokenService : ITokenService
                 new Claim(ClaimTypes.IsPersistent, is_persistent.ToString())
             };
 
-        if (!string.IsNullOrWhiteSpace(user.BGGUsername))
+        if (!user.BGGUsername.IsNullOrWhiteSpace())
             claims.Add(new Claim(CustomClaims.BGGUsername, user.BGGUsername));
 
         var roles = await identity_service.GetRolesForUserAsync(user);

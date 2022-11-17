@@ -1,4 +1,5 @@
-﻿using BoardGameTracker.Application.Identity.Data;
+﻿using BoardGameTracker.Application.Common.Extensions;
+using BoardGameTracker.Application.Identity.Data;
 using BoardGameTracker.Application.Identity.Storage;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
@@ -20,7 +21,7 @@ public class JwtAuthenticationStateProvider : AuthenticationStateProvider
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
         var token = await token_store.GetTokenAsync();
-        if (string.IsNullOrWhiteSpace(token))
+        if (token.IsNullOrWhiteSpace())
             return anonymous;
 
         return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), AuthenticationTypeConstant.JwtAutenticationType)));
