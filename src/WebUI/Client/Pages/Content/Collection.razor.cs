@@ -19,6 +19,7 @@ public partial class Collection
 
     private List<BoardGame> games = new();
     private bool is_loading = false;
+    private bool show_table = true;
     private string search_string = string.Empty;
 
     protected override async Task OnInitializedAsync()
@@ -44,5 +45,10 @@ public partial class Collection
     private void RowClick(TableRowClickEventArgs<BoardGame> tableRowClickEventArgs)
     {
         Logger.LogInformation("Clicked {game}", tableRowClickEventArgs.Item.Name);
+    }
+
+    private void GameClick(BoardGame game)
+    {
+        Logger.LogInformation("Clicked {game}", game.Name);
     }
 }

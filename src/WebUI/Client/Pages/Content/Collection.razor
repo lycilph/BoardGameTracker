@@ -6,57 +6,86 @@
         <MudText Typo="Typo.h5">Collection</MudText>
         <MudSpacer />
         <MudTooltip Text="Import from BoardGameGeek">
-            <MudIconButton Icon="@Icons.Outlined.CloudDownload" 
-                           Color="Color.Inherit" 
-                           Href="/content/import"/>
+            <MudIconButton Icon="@Icons.Outlined.CloudDownload"
+                           Color="Color.Inherit"
+                           Href="/content/import" />
         </MudTooltip>
     </MudToolBar>
 </MudPaper>
 
-<MudTable T="BoardGame"
+<MudPaper Elevation="25" Class="mb-2">
+    <MudToolBar>
+        <MudTextField Clearable=true
+                      Immediate=true
+                      Placeholder="Search"
+                      Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search"
+                      IconSize="Size.Medium"
+                      Class="mt-0"
+                      @bind-Value="search_string" />
+        <MudSpacer />
+        <MudToggleIconButton Icon="@Icons.Outlined.FormatListBulleted"
+                             ToggledIcon="@Icons.Outlined.GridView"
+                             Color="Color.Inherit"
+                             @bind-Toggled="show_table" />
+    </MudToolBar>
+</MudPaper>
+
+@if (show_table)
+{
+    <MudTable T="BoardGame"
           Items="@games"
           Loading="@is_loading"
           Filter="new Func<BoardGame,bool>(FilterFunc)"
           OnRowClick="RowClick"
           Dense=true>
-    <ToolBarContent>
-        <MudTextField Clearable=true 
-                      Immediate=true 
-                      Placeholder="Search" 
-                      Adornment="Adornment.Start" 
-                      AdornmentIcon="@Icons.Material.Filled.Search" 
-                      IconSize="Size.Medium" 
-                      Class="mt-0"
-                      @bind-Value="search_string" />
-        <MudSpacer/>
-        <MudToggleIconButton Icon="@Icons.Outlined.FormatListBulleted"
-                             ToggledIcon="@Icons.Outlined.GridView"
-                             Color="Color.Inherit"/>
-    </ToolBarContent>
-    <HeaderContent>
-        <MudTh>Image</MudTh>
-        <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<BoardGame, object>(g => g.Name)">Name</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<BoardGame, object>(g => g.YearPublished)">Publication</MudTableSortLabel></MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Image">
-            <MudImage Src="@context.Thumbnail" 
-                      ObjectFit="ObjectFit.Cover" 
-                      Elevation="25" 
-                      Width="100" 
-                      Height="100" 
+        <HeaderContent>
+            <MudTh>Image</MudTh>
+            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<BoardGame, object>(g => g.Name)">Name</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<BoardGame, object>(g => g.YearPublished)">Publication</MudTableSortLabel></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Image">
+                <MudImage Src="@context.Thumbnail"
+                      ObjectFit="ObjectFit.Cover"
+                      Elevation="25"
+                      Width="100"
+                      Height="100"
                       Class="rounded-lg" />
-        </MudTd>
-        <MudTd DataLabel="Name">@context.Name</MudTd>
-        <MudTd DataLabel="Publication">@context.YearPublished</MudTd>
-    </RowTemplate>
-    <NoRecordsContent>
-        <MudText>No records found</MudText>
-    </NoRecordsContent>
-    <LoadingContent>
-        <MudText>Loading...</MudText>
-    </LoadingContent>
-</MudTable>
+            </MudTd>
+            <MudTd DataLabel="Name">@context.Name</MudTd>
+            <MudTd DataLabel="Publication">@context.YearPublished</MudTd>
+        </RowTemplate>
+        <NoRecordsContent>
+            <MudText>No records found</MudText>
+        </NoRecordsContent>
+        <LoadingContent>
+            <MudText>Loading...</MudText>
+        </LoadingContent>
+    </MudTable>
+}
+else
+{
+    <MudGrid>
+        @foreach (var game in games)
+        {
+            @if (!FilterFunc(game))
+                continue;
+
+            <MudItem>
+                <MudCard Class="mx-2" @onclick="(() => GameClick(game))">
+                    <MudImage Src="@game.Thumbnail" Width="200" Height="200" ObjectFit="ObjectFit.Cover" />
+                    <MudCardContent>
+                        <MudPaper MaxWidth="160px" Elevation="0">
+                            <MudText Typo="Typo.body2">@game.Name</MudText>
+                        </MudPaper>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
+}
+
 
 <MudScrollToTop>
     <MudFab Color="Color.Secondary" Icon="@Icons.Filled.ArrowCircleUp" />
