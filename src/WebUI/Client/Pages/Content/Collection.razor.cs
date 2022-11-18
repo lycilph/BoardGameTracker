@@ -1,3 +1,4 @@
+using BoardGameTracker.Application.Common;
 using BoardGameTracker.Application.Common.Extensions;
 using BoardGameTracker.Application.Game.Services;
 using BoardGameTracker.Client.Extensions;
@@ -20,22 +21,26 @@ public partial class Collection
     [Inject]
     public IDialogService DialogService { get; set; } = null!;
 
+    private readonly LoadingState state;
+
     private List<BoardGame> games = new();
-    private bool is_loading = false;
     private bool show_table = true;
     private string search_string = string.Empty;
 
+    public Collection()
+    {
+        state = new LoadingState(StateHasChanged);
+    }
+
     protected override async Task OnInitializedAsync()
     {
-        is_loading = true;
+        using (state.Load())
+        {
+            var auth_state = await AuthenticationStateTask;
+            var userid = auth_state.User.GetUserId()!;
 
-        var auth_state = await AuthenticationStateTask;
-        var userid = auth_state.User.GetUserId()!;
-
-        games = await Client.GetCollectionAsync(userid);
-
-        is_loading= false;
-        StateHasChanged();
+            games = await Client.GetCollectionAsync(userid);
+        }
     }
 
     private bool FilterFunc(BoardGame game)
