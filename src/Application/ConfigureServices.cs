@@ -2,6 +2,7 @@
 using BoardGameTracker.Application.Common.Handlers;
 using BoardGameTracker.Application.Identity;
 using BoardGameTracker.Application.Identity.DTO;
+using BoardGameTracker.Application.Services.Import;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -23,6 +24,7 @@ public static class ConfigureServices
         services.AddApplicationCommonServices();
 
         services.AddScoped<AuthenticationStateProvider, JwtAuthenticationStateProvider>();
+        services.AddScoped<IImportService, ImportService>();
 
         services.AddTransient<LoggingHandler>();
         services.AddTransient<AuthenticationHandler>();

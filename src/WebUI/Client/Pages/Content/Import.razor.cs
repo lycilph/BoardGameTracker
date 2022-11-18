@@ -2,6 +2,7 @@ using BoardGameTracker.Application.BoardGameGeek;
 using BoardGameTracker.Application.Common.Extensions;
 using BoardGameTracker.Application.Game.Services;
 using BoardGameTracker.Application.Identity.Services;
+using BoardGameTracker.Application.Services.Import;
 using BoardGameTracker.Domain.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -20,9 +21,9 @@ namespace BoardGameTracker.Client.Pages.Content
         [Inject]
         public BoardGameGeekClient BGGClient { get; set; } = null!;
         [Inject]
-        public GameClient GameClient { get; set; } = null!;
-        [Inject]
         public IIdentityClient IdentityClient { get; set; } = null!;
+        [Inject]
+        public IImportService ImportService { get; set; } = null!;
         [Inject]
         public ISnackbar Snackbar { get; set; } = null!;
 
@@ -32,10 +33,7 @@ namespace BoardGameTracker.Client.Pages.Content
         private string userid = string.Empty;
         private string username = string.Empty;
         private bool loading = false;
-        private List<BoardGame> owned_games = new();
-        private List<BoardGame> games_to_add = new();
-        private List<BoardGame> games_to_remove = new();
-        private List<BoardGame> games_in_collection = new();
+        private ImportModel model = new();
         private HashSet<BoardGame> games_to_add_selected = new();
         private HashSet<BoardGame> games_to_remove_selected = new();
 
@@ -67,7 +65,7 @@ namespace BoardGameTracker.Client.Pages.Content
             loading = true;
 
             // Update the BGG username
-            if (!string.IsNullOrWhiteSpace(username))
+            if (!username.IsNullOrWhiteSpace())
                 await IdentityClient.UpdateBGGUsername(userid, username);
 
             // Check if user exists on bgg
@@ -79,19 +77,7 @@ namespace BoardGameTracker.Client.Pages.Content
                 return;
             }
 
-            // Load games from BGG
-            var bgg_collection = await BGGClient.GetCollection(username);
-            var bgg_owned_games = bgg_collection.Where(g => g.IsOwned()).ToList();
-
-            // Load profile from DB
-            owned_games = await GameClient.GetCollectionAsync(userid);
-
-            // Compare BGG and DB
-            var comparer = new BoardGameComparer();
-            games_to_add = bgg_owned_games.Except(owned_games, comparer).ToList();
-            games_to_remove = owned_games.Except(bgg_owned_games, comparer).ToList();
-            games_in_collection = owned_games.Intersect(bgg_owned_games, comparer).ToList();
-
+            model = await ImportService.SyncWithBGGAsync(username, userid);
             loading = false;
             StateHasChanged();
         }
@@ -105,26 +91,8 @@ namespace BoardGameTracker.Client.Pages.Content
         private async void ImportGames()
         {
             loading = true;
-            
-            var comparer = new BoardGameComparer();
-            if (games_to_add_selected.Any())
-            {
-                var ids = games_to_add_selected.Select(g => g.Id).ToList();
-                var games = await BGGClient.GetGameDetails(ids);
-                owned_games.AddRange(games);
-            }
-            if (games_to_remove_selected.Any())
-                owned_games.RemoveAll(g => games_to_remove_selected.Contains(g, comparer));
-
-            await GameClient.UpdateCollectionAsync(userid, owned_games);
-
-            owned_games.Clear();
-            games_to_add.Clear();
-            games_to_remove.Clear();
-            games_in_collection.Clear();
-            games_to_add_selected.Clear();
-            games_to_remove_selected.Clear();
-
+            await ImportService.ImportGamesAsync(userid, model.owned_games, games_to_add_selected, games_to_remove_selected);
+            model = new();
             loading = false;
             StateHasChanged();
         }
