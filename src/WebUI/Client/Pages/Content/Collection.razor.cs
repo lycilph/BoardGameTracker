@@ -1,6 +1,6 @@
 using BoardGameTracker.Application.Common.Extensions;
 using BoardGameTracker.Application.Game.Services;
-using BoardGameTracker.Client.Shared.Components;
+using BoardGameTracker.Client.Extensions;
 using BoardGameTracker.Domain.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -48,25 +48,12 @@ public partial class Collection
     private void RowClick(TableRowClickEventArgs<BoardGame> tableRowClickEventArgs)
     {
         Logger.LogInformation("Clicked {game}", tableRowClickEventArgs.Item.Name);
-        ShowGameDetails(tableRowClickEventArgs.Item);
+        DialogService.ShowGameDetails(tableRowClickEventArgs.Item);
     }
 
     private void GameClick(BoardGame game)
     {
         Logger.LogInformation("Clicked {game}", game.Name);
-        ShowGameDetails(game);
-    }
-
-    private void ShowGameDetails(BoardGame game)
-    {
-        var options = new DialogOptions
-        {
-            CloseOnEscapeKey = true,
-            NoHeader = true,
-            MaxWidth = MaxWidth.Large
-        };
-        var parameters = new DialogParameters { ["Game"] = game };
-
-        DialogService.Show<GameDetails>("Game Details", parameters, options);
+        DialogService.ShowGameDetails(game);
     }
 }

@@ -1,7 +1,7 @@
 using BoardGameTracker.Application.BoardGameGeek;
 using BoardGameTracker.Application.Common.Extensions;
 using BoardGameTracker.Application.Game.Services;
-using BoardGameTracker.Client.Shared.Components;
+using BoardGameTracker.Client.Extensions;
 using BoardGameTracker.Domain.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -48,15 +48,6 @@ public partial class Home
         Logger.LogInformation("Clicked {game}", game.Name);
 
         game = await BGGClient.GetGameDetails(game.Id);
-
-        var options = new DialogOptions
-        {
-            CloseOnEscapeKey = true,
-            NoHeader = true,
-            MaxWidth = MaxWidth.Large
-        };
-        var parameters = new DialogParameters { ["Game"] = game };
-
-        DialogService.Show<GameDetails>("Game Details", parameters, options);
+        DialogService.ShowGameDetails(game);
     }
 }
