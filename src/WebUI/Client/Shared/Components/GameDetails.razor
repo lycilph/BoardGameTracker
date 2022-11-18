@@ -1,0 +1,37 @@
+﻿@using BoardGameTracker.Application.Common.Extensions;
+@using BoardGameTracker.Domain.Data;
+
+<MudDialog>
+    <DialogContent>
+        <MudGrid>
+            <MudItem>
+                <MudImage Src="@Image" Width="300"/>
+            </MudItem>
+            <MudItem>
+                <MudStack>
+                    <MudText Typo="Typo.h5">@Game.Name</MudText>
+                    <MudText>@Game.YearPublished</MudText>
+                </MudStack>
+            </MudItem>
+        </MudGrid>
+    </DialogContent>
+</MudDialog>
+
+
+@code {
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = null!;
+    [Parameter]
+    public BoardGame Game { get; set; } = null!;
+
+    [Inject]
+    public ILogger<GameDetails> Logger { get; set; } = null!;
+
+    public string Image { get => Game.Image.IsNullOrWhiteSpace() ? Game.Thumbnail : Game.Image; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Logger.LogInformation("Got here");
+        await Task.CompletedTask;
+    }
+}

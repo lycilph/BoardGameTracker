@@ -1,9 +1,11 @@
 using BoardGameTracker.Application.BoardGameGeek;
 using BoardGameTracker.Application.Common.Extensions;
 using BoardGameTracker.Application.Game.Services;
+using BoardGameTracker.Client.Shared.Components;
 using BoardGameTracker.Domain.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using MudBlazor;
 
 namespace BoardGameTracker.Client.Pages.Content;
 
@@ -18,6 +20,8 @@ public partial class Home
     public BoardGameGeekClient BGGClient { get; set; } = null!;
     [Inject]
     public GameClient GameClient { get; set; } = null!;
+    [Inject]
+    public IDialogService DialogService { get; set; } = null!;
 
     private List<BoardGame> hotness = new();
     private Profile profile = new();
@@ -42,5 +46,14 @@ public partial class Home
     private void GameClick(BoardGame game)
     {
         Logger.LogInformation("Clicked {game}", game.Name);
+
+        var options = new DialogOptions
+        {
+            CloseOnEscapeKey = true,
+            NoHeader = true
+        };
+        var parameters = new DialogParameters { ["Game"] = game };
+
+        DialogService.Show<GameDetails>("Game Details", parameters, options);
     }
 }

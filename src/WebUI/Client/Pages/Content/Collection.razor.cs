@@ -1,8 +1,10 @@
 using BoardGameTracker.Application.Common.Extensions;
 using BoardGameTracker.Application.Game.Services;
+using BoardGameTracker.Client.Shared.Components;
 using BoardGameTracker.Domain.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Hosting.Server;
 using MudBlazor;
 
 namespace BoardGameTracker.Client.Pages.Content;
@@ -16,6 +18,8 @@ public partial class Collection
     public ILogger<Home> Logger { get; set; } = null!;
     [Inject]
     public GameClient Client { get; set; } = null!;
+    [Inject]
+    public IDialogService DialogService { get; set; } = null!;
 
     private List<BoardGame> games = new();
     private bool is_loading = false;
@@ -45,10 +49,24 @@ public partial class Collection
     private void RowClick(TableRowClickEventArgs<BoardGame> tableRowClickEventArgs)
     {
         Logger.LogInformation("Clicked {game}", tableRowClickEventArgs.Item.Name);
+        ShowGameDetails(tableRowClickEventArgs.Item);
     }
 
     private void GameClick(BoardGame game)
     {
         Logger.LogInformation("Clicked {game}", game.Name);
+        ShowGameDetails(game);
+    }
+
+    private void ShowGameDetails(BoardGame game)
+    {
+        var options = new DialogOptions
+        {
+            CloseOnEscapeKey = true,
+            NoHeader = true
+        };
+        var parameters = new DialogParameters { ["Game"] = game };
+
+        DialogService.Show<GameDetails>("Game Details", parameters, options);
     }
 }
