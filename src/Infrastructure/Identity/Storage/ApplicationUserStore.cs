@@ -30,11 +30,6 @@ public class ApplicationUserStore :
         throw new NotImplementedException();
     }
 
-    public Task<bool> GetEmailConfirmedAsync(ApplicationUser user, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
     public Task<string?> GetNormalizedEmailAsync(ApplicationUser user, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
@@ -71,11 +66,6 @@ public class ApplicationUserStore :
     }
 
     public Task SetEmailAsync(ApplicationUser user, string? email, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task SetEmailConfirmedAsync(ApplicationUser user, bool confirmed, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
@@ -221,6 +211,11 @@ public class ApplicationUserStore :
         return Task.FromResult(GetUserProperty(user, user => user.PasswordHash, cancellationToken));
     }
 
+    public Task<bool> GetEmailConfirmedAsync(ApplicationUser user, CancellationToken cancellationToken)
+    {
+        return Task.FromResult(GetUserProperty(user, user => user.EmailConfirmed, cancellationToken));
+    }
+
     public async Task<IList<string>> GetRolesAsync(ApplicationUser user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -259,6 +254,12 @@ public class ApplicationUserStore :
     public Task SetNormalizedEmailAsync(ApplicationUser user, string? normalizedEmail, CancellationToken cancellationToken)
     {
         SetUserProperty(user, normalizedEmail, (u, m) => u.NormalizedEmail = normalizedEmail, cancellationToken);
+        return Task.CompletedTask;
+    }
+
+    public Task SetEmailConfirmedAsync(ApplicationUser user, bool confirmed, CancellationToken cancellationToken)
+    {
+        SetUserProperty(user, confirmed, (u, m) => u.EmailConfirmed = confirmed, cancellationToken);
         return Task.CompletedTask;
     }
 

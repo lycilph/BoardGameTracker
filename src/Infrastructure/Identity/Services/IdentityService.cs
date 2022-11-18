@@ -69,4 +69,19 @@ public class IdentityService : IIdentityService
     {
         return user_manager.PasswordHasher.HashPassword(admin, password);
     }
+
+    public async Task<string> GenerateEmailConfirmationTokenAsync(ApplicationUser user)
+    {
+        return await user_manager.GenerateEmailConfirmationTokenAsync(user);
+    }
+
+    public async Task<IdentityResult> ConfirmEmailAsync(ApplicationUser user, string code)
+    {
+        return await user_manager.ConfirmEmailAsync(user, code);
+    }
+
+    public async Task<bool> IsEmailConfirmedAsync(ApplicationUser user)
+    {
+        return await user_manager.IsEmailConfirmedAsync(user);
+    }
 }

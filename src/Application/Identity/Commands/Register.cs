@@ -1,12 +1,16 @@
-﻿using BoardGameTracker.Application.Identity.Data;
+﻿using BoardGameTracker.Application.Contracts;
+using BoardGameTracker.Application.Identity.Data;
 using BoardGameTracker.Application.Identity.DTO;
 using BoardGameTracker.Application.Identity.Services;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
+using System.Text.Encodings.Web;
 
 namespace BoardGameTracker.Application.Identity.Commands;
 
-public record class RegisterCommand(RegisterRequest Request) : IRequest<AuthenticationResponse>;
+public record class RegisterCommand(RegisterRequest Request, string Origin) : IRequest<AuthenticationResponse>;
 
 public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
 {
@@ -21,11 +25,13 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterCommand, Authe
 {
     private readonly IValidator<RegisterCommand> validator;
     private readonly IIdentityService identity_service;
+    private readonly IMailSender mail;
 
-    public RegisterUserCommandHandler(IValidator<RegisterCommand> validator, IIdentityService identity_service)
+    public RegisterUserCommandHandler(IValidator<RegisterCommand> validator, IIdentityService identity_service, IMailSender mail)
     {
         this.validator = validator;
         this.identity_service = identity_service;
+        this.mail = mail;
     }
 
     public async Task<AuthenticationResponse> Handle(RegisterCommand command, CancellationToken cancellationToken)
@@ -63,6 +69,17 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterCommand, Authe
         var bgg_username_result = await identity_service.UpdateUserAsync(user);
         if (!bgg_username_result.Succeeded)
             return AuthenticationResponse.Failure(create_result.Errors.Select(e => e.Description));
+
+
+        var code = await identity_service.GenerateEmailConfirmationTokenAsync(user);
+        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+        var uri = new Uri($"{command.Origin}/api/authentication/confirmemail/");
+        var url = QueryHelpers.AddQueryString(uri.ToString(), "userid", user.Id);
+        url = QueryHelpers.AddQueryString(url, "code", code);
+
+        var message = $"Please confirm you email by <a href='{HtmlEncoder.Default.Encode(url)}'>clicking here</a>";
+        await mail.SendEmailAsync(user.Email, "Confirm email", message);
 
         return AuthenticationResponse.Success();
     }

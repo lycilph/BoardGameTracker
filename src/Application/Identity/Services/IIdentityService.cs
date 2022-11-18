@@ -22,4 +22,8 @@ public interface IIdentityService
 
     Task<bool> CheckPasswordAsync(ApplicationUser user, string password);
     string HashPassword(ApplicationUser admin, string password);
+
+    Task<string> GenerateEmailConfirmationTokenAsync(ApplicationUser user);
+    Task<IdentityResult> ConfirmEmailAsync(ApplicationUser user, string code);
+    Task<bool> IsEmailConfirmedAsync(ApplicationUser user);
 }

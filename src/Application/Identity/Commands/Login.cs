@@ -42,6 +42,10 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, AuthenticationR
         if (user == null || !await identity_service.CheckPasswordAsync(user, request.Password))
             return AuthenticationResponse.Failure("Invalid Email/Username or Password");
 
+        var email_confirmed = await identity_service.IsEmailConfirmedAsync(user);
+        if (!email_confirmed)
+            return AuthenticationResponse.Failure("User cannot sign in without a confirmed email");
+
         (var token, var refresh_token) = await token_service.GenerateTokensAsync(user, request.RememberMe);
 
         // This is used when refreshing the access tokens

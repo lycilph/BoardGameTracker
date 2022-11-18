@@ -46,7 +46,8 @@ public static class ConfigureData
             var admin = new ApplicationUser
             {
                 UserName = options.Username,
-                Email = options.Email
+                Email = options.Email,
+                EmailConfirmed = true
             };
             if (identity_service.FindUserByEmailAsync(admin.Email).Result == null)
             {

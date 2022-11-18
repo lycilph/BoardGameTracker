@@ -9,7 +9,8 @@ public class AuthenticationController : ApiControllerBase
     [HttpPost("Registration")]
     public async Task<IActionResult> RegisterUser([FromBody] RegisterRequest request)
     {
-        var response = await Mediator.Send(new RegisterCommand(request));
+        var origin = Request.Headers["origin"];
+        var response = await Mediator.Send(new RegisterCommand(request, origin!));
 
         if (response.IsSuccessful)
             return CreatedAtAction(nameof(RegisterUser), request);
@@ -35,6 +36,17 @@ public class AuthenticationController : ApiControllerBase
 
         if (response.IsSuccessful)
             return Ok(response);
+        else
+            return BadRequest(response.Errors.Any() ? response.Errors : response.Error);
+    }
+
+    [HttpGet("ConfirmEmail")]
+    public async Task<IActionResult> ConfirmEmail([FromQuery] string userid, [FromQuery] string code)
+    {
+        var response = await Mediator.Send(new ConfirmEmailCommand(userid, code));
+
+        if (response.IsSuccessful)
+            return Redirect("/authentication/login");
         else
             return BadRequest(response.Errors.Any() ? response.Errors : response.Error);
     }

@@ -8,7 +8,9 @@ using BoardGameTracker.Infrastructure.Config;
 using BoardGameTracker.Infrastructure.Contracts;
 using BoardGameTracker.Infrastructure.Identity.Services;
 using BoardGameTracker.Infrastructure.Identity.Storage;
+using BoardGameTracker.Infrastructure.Mail;
 using BoardGameTracker.Infrastructure.Storage;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -32,6 +34,7 @@ public static class ConfigureServices
         services.Configure<CosmosDBSettings>(configuration.GetSection(CosmosDBSettings.Key));
         services.Configure<IdentitySeedData>(configuration.GetSection(IdentitySeedData.Key));
         services.Configure<JWTSettings>(configuration.GetSection(JWTSettings.Key));
+        services.Configure<MailOptions>(configuration.GetSection(MailOptions.Key));
 
         services.AddIdentity<ApplicationUser, ApplicationRole>(
             options =>
@@ -43,8 +46,10 @@ public static class ConfigureServices
                 options.Password.RequiredUniqueChars = 0;
             })
             .AddUserStore<ApplicationUserStore>()
-            .AddRoleStore<ApplicationRoleStore>();
+            .AddRoleStore<ApplicationRoleStore>()
+            .AddDefaultTokenProviders();
 
+        services.AddScoped<IMailSender, SmtpMailSender>(); 
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddScoped<IIdentityContext, IdentityContext>();
         services.AddScoped<ITokenService, TokenService>();

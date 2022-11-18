@@ -91,8 +91,13 @@ namespace BoardGameTracker.Client.Pages.Content
         private async void ImportGames()
         {
             loading = true;
+            
             await ImportService.ImportGamesAsync(userid, model.owned_games, games_to_add_selected, games_to_remove_selected);
+            
             model = new();
+            games_to_add_selected.Clear();
+            games_to_remove_selected.Clear();
+
             loading = false;
             StateHasChanged();
         }
