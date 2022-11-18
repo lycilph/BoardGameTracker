@@ -18,4 +18,13 @@ public class BoardGameDTO : IItem
     public string YearPublished { get; set; } = string.Empty;
     public string Image { get; set; } = string.Empty;
     public string Thumbnail { get; set; } = string.Empty;
+    public int MinPlayers { get; set; }
+    public int MaxPlayers { get; set; }
+    public int PlayingTime { get; set; }
+    public int MinPlaytime { get; set; }
+    public int MaxPlaytime { get; set; }
+    public int MinAge { get; set; }
+    public string Rating { get; set; } = string.Empty;
+    public string Weight { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
 }

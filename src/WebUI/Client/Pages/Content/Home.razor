@@ -60,7 +60,7 @@ else
     <MudStack Row=true Class="mt-4 py-2 overflow-scroll">
         @foreach (var game in hotness)
         {
-            <MudCard Class="mx-2" @onclick="(() => GameClick(game))">
+            <MudCard Class="mx-2" @onclick="(() => GameClickAsync(game))">
                 <MudImage Src="@game.Thumbnail" Width="200" Height="200" ObjectFit="ObjectFit.Cover" />
                 <MudCardContent>
                     <MudText Typo="Typo.body2">@game.Name</MudText>

@@ -4,7 +4,6 @@ using BoardGameTracker.Client.Shared.Components;
 using BoardGameTracker.Domain.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Hosting.Server;
 using MudBlazor;
 
 namespace BoardGameTracker.Client.Pages.Content;
@@ -63,7 +62,8 @@ public partial class Collection
         var options = new DialogOptions
         {
             CloseOnEscapeKey = true,
-            NoHeader = true
+            NoHeader = true,
+            MaxWidth = MaxWidth.Large
         };
         var parameters = new DialogParameters { ["Game"] = game };
 

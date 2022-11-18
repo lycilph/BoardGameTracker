@@ -108,7 +108,11 @@ namespace BoardGameTracker.Client.Pages.Content
             
             var comparer = new BoardGameComparer();
             if (games_to_add_selected.Any())
-                owned_games.AddRange(games_to_add_selected);
+            {
+                var ids = games_to_add_selected.Select(g => g.Id).ToList();
+                var games = await BGGClient.GetGameDetails(ids);
+                owned_games.AddRange(games);
+            }
             if (games_to_remove_selected.Any())
                 owned_games.RemoveAll(g => games_to_remove_selected.Contains(g, comparer));
 

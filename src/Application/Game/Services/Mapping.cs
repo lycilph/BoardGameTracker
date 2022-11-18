@@ -22,7 +22,16 @@ public static class Mapping
             Name = game.Name,
             YearPublished = game.YearPublished,
             Image = game.Image,
-            Thumbnail = game.Thumbnail
+            Thumbnail = game.Thumbnail,
+            MinPlayers = game.MinPlayers,
+            MaxPlayers = game.MaxPlayers,
+            PlayingTime = game.Playingtime,
+            MinPlaytime = game.MinPlaytime,
+            MaxPlaytime = game.MaxPlaytime,
+            MinAge = game.MinAge,
+            Rating = game.Rating,
+            Weight = game.Weight,
+            Description = game.Description
         };
     }
 
@@ -34,7 +43,16 @@ public static class Mapping
             Name = dto.Name,
             YearPublished = dto.YearPublished,
             Image = dto.Image,
-            Thumbnail = dto.Thumbnail
+            Thumbnail = dto.Thumbnail,
+            MinPlayers = dto.MinPlayers,
+            MaxPlayers = dto.MaxPlayers,
+            Playingtime = dto.PlayingTime,
+            MinPlaytime = dto.MinPlaytime,
+            MaxPlaytime = dto.MaxPlaytime,
+            MinAge = dto.MinAge,
+            Rating = dto.Rating,
+            Weight = dto.Weight,
+            Description = dto.Description
         };
     }
 

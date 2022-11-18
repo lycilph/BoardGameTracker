@@ -43,14 +43,17 @@ public partial class Home
         StateHasChanged();
     }
 
-    private void GameClick(BoardGame game)
+    private async Task GameClickAsync(BoardGame game)
     {
         Logger.LogInformation("Clicked {game}", game.Name);
+
+        game = await BGGClient.GetGameDetails(game.Id);
 
         var options = new DialogOptions
         {
             CloseOnEscapeKey = true,
-            NoHeader = true
+            NoHeader = true,
+            MaxWidth = MaxWidth.Large
         };
         var parameters = new DialogParameters { ["Game"] = game };
 
