@@ -2,6 +2,7 @@ using BoardGameTracker.Application.Common;
 using BoardGameTracker.Application.Common.Extensions;
 using BoardGameTracker.Application.Game.Services;
 using BoardGameTracker.Client.Extensions;
+using BoardGameTracker.Client.Pages.Content.Models;
 using BoardGameTracker.Domain.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -23,7 +24,7 @@ public partial class Collection
 
     private readonly LoadingState state;
 
-    private List<BoardGame> games = new();
+    private List<BoardGameModel> games = new();
     private bool show_table = true;
     private string search_string = string.Empty;
 
@@ -39,26 +40,27 @@ public partial class Collection
             var auth_state = await AuthenticationStateTask;
             var userid = auth_state.User.GetUserId()!;
 
-            games = await Client.GetCollectionAsync(userid);
+            var temp = await Client.GetCollectionAsync(userid);
+            games = temp.Select(BoardGameModel.Create).ToList();
         }
     }
 
-    private bool FilterFunc(BoardGame game)
+    private bool FilterFunc(BoardGameModel game)
     {
         return search_string.IsNullOrWhiteSpace() ||
                game.Name.Contains(search_string, StringComparison.OrdinalIgnoreCase) ||
                game.YearPublished.Contains(search_string, StringComparison.OrdinalIgnoreCase);
     }
 
-    private void RowClick(TableRowClickEventArgs<BoardGame> tableRowClickEventArgs)
+    private void RowClick(TableRowClickEventArgs<BoardGameModel> tableRowClickEventArgs)
     {
         Logger.LogInformation("Clicked {game}", tableRowClickEventArgs.Item.Name);
-        DialogService.ShowGameDetails(tableRowClickEventArgs.Item);
+        DialogService.ShowGameDetails(tableRowClickEventArgs.Item.Game);
     }
 
-    private void GameClick(BoardGame game)
+    private void GameClick(BoardGameModel model)
     {
-        Logger.LogInformation("Clicked {game}", game.Name);
-        DialogService.ShowGameDetails(game);
+        Logger.LogInformation("Clicked {game}", model.Name);
+        DialogService.ShowGameDetails(model.Game);
     }
 }

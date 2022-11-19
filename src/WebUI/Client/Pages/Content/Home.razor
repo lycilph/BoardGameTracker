@@ -50,7 +50,11 @@
         <MudStack Row="true">
             @for (int i = 0; i < 3; i++)
             {
-                <MudSkeleton Width="200px" Height="400px"/>
+                <MudStack>
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="200px" Height="200px" />
+                    <MudSkeleton Width="80%" />
+                    <MudSkeleton Width="100%" />
+                </MudStack>
             }
         </MudStack>
     </MudPaper>

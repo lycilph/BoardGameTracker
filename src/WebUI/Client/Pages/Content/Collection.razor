@@ -1,4 +1,5 @@
 ﻿@page "/content/collection"
+@using BoardGameTracker.Client.Pages.Content.Models;
 @using BoardGameTracker.Domain.Data;
 
 <MudPaper Elevation="25" Class="mb-2">
@@ -17,6 +18,7 @@
     <MudToolBar>
         <MudTextField Clearable=true
                       Immediate=true
+                      DebounceInterval="500"
                       Placeholder="Search"
                       Adornment="Adornment.Start"
                       AdornmentIcon="@Icons.Material.Filled.Search"
@@ -33,20 +35,21 @@
 
 @if (show_table)
 {
-    <MudTable T="BoardGame"
+    <MudTable T="BoardGameModel"
           Items="@games"
           Loading="@state.IsLoading"
-          Filter="new Func<BoardGame,bool>(FilterFunc)"
+          Filter="new Func<BoardGameModel,bool>(FilterFunc)"
           OnRowClick="RowClick"
-          Dense=true>
+          Dense=true
+          RowsPerPage="100">
         <HeaderContent>
             <MudTh>Image</MudTh>
-            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<BoardGame, object>(g => g.Name)">Name</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<BoardGame, object>(g => g.YearPublished)">Publication</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<BoardGame, object>(g => g.MinPlayers)">Players</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<BoardGame, object>(g => g.MinPlaytime)">Playtime</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<BoardGame, object>(g => g.Rating)">Rating</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<BoardGame, object>(g => g.Weight)">Weight</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<BoardGameModel, object>(g => g.Name)">Name</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<BoardGameModel, object>(g => g.YearPublished)">Publication</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<BoardGameModel, object>(g => g.Game.MinPlayers)">Players</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<BoardGameModel, object>(g => g.Game.MinPlaytime)">Playtime</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<BoardGameModel, object>(g => g.Rating)">Rating</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<BoardGameModel, object>(g => g.Weight)">Weight</MudTableSortLabel></MudTh>
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Image">
@@ -59,11 +62,14 @@
             </MudTd>
             <MudTd DataLabel="Name">@context.Name</MudTd>
             <MudTd DataLabel="Publication">@context.YearPublished</MudTd>
-            <MudTd>@context.MinPlayers-@context.MaxPlayers</MudTd>
-            <MudTd>@context.MinPlaytime-@context.MaxPlaytime</MudTd>
+            <MudTd>@context.Players</MudTd>
+            <MudTd>@context.Playtime</MudTd>
             <MudTd>@context.Rating</MudTd>
             <MudTd>@context.Weight</MudTd>
         </RowTemplate>
+        <PagerContent>
+            <MudTablePager HorizontalAlignment="HorizontalAlignment.Center" />
+        </PagerContent>
         <NoRecordsContent>
             <MudText>No records found</MudText>
         </NoRecordsContent>
@@ -74,40 +80,62 @@
 }
 else
 {
-    <MudGrid>
-        @foreach (var game in games)
-        {
-            @if (!FilterFunc(game))
-                continue;
+    @if (state.IsLoading)
+    {
+        <MudGrid Justify="Justify.Center">
+            @for (int i = 0; i < 3; i++)
+            {
+                <MudItem>
+                    <MudCard Class="mx-2">
+                        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="200px" Height="200px" />
+                        <MudCardContent>
+                            <MudCardContent>
+                                <MudSkeleton Width="30%" Height="42px;" />
+                                <MudSkeleton Width="80%" />
+                                <MudSkeleton Width="100%" />
+                            </MudCardContent>
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+            }
+        </MudGrid>
+    }
+    else
+    {
+        <MudGrid Justify="Justify.Center">
+            @foreach (var game in games)
+            {
+                @if (!FilterFunc(game))
+                    continue;
 
-            <MudItem>
-                <MudCard Class="mx-2" @onclick="(() => GameClick(game))">
-                    <MudImage Src="@game.Thumbnail" Width="200" Height="200" ObjectFit="ObjectFit.Cover" />
-                    <MudCardContent>
-                        <MudPaper MaxWidth="160px" Elevation="0">
-                            <MudText Typo="Typo.body2">@game.Name</MudText>
-                            <MudStack Row=true Class="mt-2">
-                                <MudStack>
-                                    <MudText Typo="Typo.caption">Players</MudText>
-                                    <MudText Typo="Typo.caption" Class="mt-n4">@game.MinPlayers-@game.MaxPlayers</MudText>
+                <MudItem>
+                    <MudCard Class="mx-2" @onclick="(() => GameClick(game))">
+                        <MudImage Src="@game.Thumbnail" Width="200" Height="200" ObjectFit="ObjectFit.Cover" />
+                        <MudCardContent>
+                            <MudPaper MaxWidth="160px" Elevation="0">
+                                <MudText Typo="Typo.body2">@game.Name</MudText>
+                                <MudStack Row=true Class="mt-2">
+                                    <MudStack>
+                                        <MudText Typo="Typo.caption">Players</MudText>
+                                        <MudText Typo="Typo.caption" Class="mt-n4">@game.Players</MudText>
+                                    </MudStack>
+                                    <MudStack>
+                                        <MudText Typo="Typo.caption">Playtime</MudText>
+                                        <MudText Typo="Typo.caption" Class="mt-n4">@game.Playtime</MudText>
+                                    </MudStack>
+                                    <MudStack>
+                                        <MudText Typo="Typo.caption">Weight</MudText>
+                                        <MudText Typo="Typo.caption" Class="mt-n4">@game.Weight</MudText>
+                                    </MudStack>
                                 </MudStack>
-                                <MudStack>
-                                    <MudText Typo="Typo.caption">Playtime</MudText>
-                                    <MudText Typo="Typo.caption" Class="mt-n4">@game.MinPlaytime-@game.MaxPlaytime</MudText>
-                                </MudStack>
-                                <MudStack>
-                                    <MudText Typo="Typo.caption">Weight</MudText>
-                                    <MudText Typo="Typo.caption" Class="mt-n4">@game.Weight.Substring(0,3)</MudText>
-                                </MudStack>
-                            </MudStack>
-                        </MudPaper>
-                    </MudCardContent>
-                </MudCard>
-            </MudItem>
-        }
-    </MudGrid>
+                            </MudPaper>
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+            }
+        </MudGrid>
+    }
 }
-
 
 <MudScrollToTop>
     <MudFab Color="Color.Secondary" Icon="@Icons.Filled.ArrowCircleUp" />
