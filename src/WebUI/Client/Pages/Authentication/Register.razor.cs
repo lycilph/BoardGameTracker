@@ -66,6 +66,7 @@ public partial class Register
             return;
         }
 
+        Snackbar.Add("Please confirm your email to activate your account", MudBlazor.Severity.Info);
         NavigationManager.NavigateTo("/");
     }
 
