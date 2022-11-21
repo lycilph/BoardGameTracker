@@ -1,5 +1,5 @@
-﻿using BoardGameTracker.Application.Identity.Services;
-using BoardGameTracker.Application.Identity.Storage;
+﻿using BoardGameTracker.Application.Authentication.Services;
+using BoardGameTracker.Application.Authentication.Storage;
 using BoardGameTracker.Domain.Exceptions;
 using Microsoft.Extensions.Logging;
 using System.Net;

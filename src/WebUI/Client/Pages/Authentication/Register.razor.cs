@@ -1,5 +1,5 @@
-﻿using BoardGameTracker.Application.Identity.DTO;
-using BoardGameTracker.Application.Identity.Services;
+﻿using BoardGameTracker.Application.Authentication.DTO;
+using BoardGameTracker.Application.Authentication.Services;
 using BoardGameTracker.Client.Extensions;
 using FluentValidation;
 using Microsoft.AspNetCore.Components;

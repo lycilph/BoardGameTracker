@@ -1,5 +1,5 @@
-﻿using BoardGameTracker.Application.Identity.Commands;
-using BoardGameTracker.Application.Identity.Data;
+﻿using BoardGameTracker.Application.Authentication.Data;
+using BoardGameTracker.Application.Identity.Commands;
 using BoardGameTracker.Application.Identity.DTO;
 using BoardGameTracker.Application.Identity.Query;
 using Microsoft.AspNetCore.Authorization;

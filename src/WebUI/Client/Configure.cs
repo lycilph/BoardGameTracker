@@ -1,4 +1,5 @@
-﻿using BoardGameTracker.Application.BoardGameGeek;
+﻿using BoardGameTracker.Application.Authentication.Services;
+using BoardGameTracker.Application.BoardGameGeek;
 using BoardGameTracker.Application.Common.Handlers;
 using BoardGameTracker.Application.Game.Services;
 using BoardGameTracker.Application.Identity.Services;

@@ -1,12 +1,12 @@
 ﻿using BoardGameTracker.Application.Common.Behaviours;
 using BoardGameTracker.Application.Common.Handlers;
-using BoardGameTracker.Application.Identity;
-using BoardGameTracker.Application.Identity.DTO;
+using BoardGameTracker.Application.Authentication.DTO;
 using BoardGameTracker.Application.Services.Import;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
+using BoardGameTracker.Application.Authentication;
 
 namespace BoardGameTracker.Application;
 

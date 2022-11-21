@@ -1,4 +1,4 @@
-﻿using BoardGameTracker.Application.Identity.Data;
+﻿using BoardGameTracker.Application.Authentication.Data;
 using Microsoft.AspNetCore.Identity;
 
 namespace BoardGameTracker.Application.Identity.Services;
@@ -11,7 +11,7 @@ public interface IIdentityService
     Task<IdentityResult> UpdateUserAsync(ApplicationUser user);
 
     Task<IdentityResult> AddUserToRoleAsync(ApplicationUser user, string role);
-    
+
     Task<ApplicationUser?> FindUserByIdAsync(string id);
     Task<ApplicationUser?> FindUserByEmailAsync(string email);
     Task<ApplicationUser?> FindUserByNameAsync(string username);

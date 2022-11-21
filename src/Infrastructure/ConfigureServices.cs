@@ -1,15 +1,17 @@
 ﻿using Blazored.LocalStorage;
 using Blazored.SessionStorage;
+using BoardGameTracker.Application.Authentication.Data;
+using BoardGameTracker.Application.Authentication.Services;
+using BoardGameTracker.Application.Authentication.Storage;
 using BoardGameTracker.Application.Contracts;
-using BoardGameTracker.Application.Identity.Data;
 using BoardGameTracker.Application.Identity.Services;
-using BoardGameTracker.Application.Identity.Storage;
+using BoardGameTracker.Infrastructure.Authentication.Services;
 using BoardGameTracker.Infrastructure.Config;
-using BoardGameTracker.Infrastructure.Contracts;
 using BoardGameTracker.Infrastructure.Identity.Services;
-using BoardGameTracker.Infrastructure.Identity.Storage;
 using BoardGameTracker.Infrastructure.Mail;
 using BoardGameTracker.Infrastructure.Storage;
+using BoardGameTracker.Infrastructure.Storage.Contracts;
+using BoardGameTracker.Infrastructure.Storage.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,7 +53,7 @@ public static class ConfigureServices
 
         services.AddScoped<IMailSender, SmtpMailSender>(); 
         services.AddScoped<IIdentityService, IdentityService>();
-        services.AddScoped<IIdentityContext, IdentityContext>();
+        services.AddScoped<IApplicationContext, ApplicationContext>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<ICosmosDBContainerFactory, CosmosDBContainerFactory>();
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));

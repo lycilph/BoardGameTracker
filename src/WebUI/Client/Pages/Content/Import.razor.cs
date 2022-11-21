@@ -1,13 +1,12 @@
 using BoardGameTracker.Application.BoardGameGeek;
 using BoardGameTracker.Application.Common.Extensions;
-using BoardGameTracker.Application.Game.Services;
-using BoardGameTracker.Application.Identity.Services;
 using BoardGameTracker.Application.Services.Import;
 using BoardGameTracker.Domain.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
+using BoardGameTracker.Application.Identity.Services;
 
 namespace BoardGameTracker.Client.Pages.Content
 {

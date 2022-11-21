@@ -1,4 +1,5 @@
-﻿using BoardGameTracker.Application.Identity.DTO;
+﻿using BoardGameTracker.Application.Authentication;
+using BoardGameTracker.Application.Identity.DTO;
 using FluentValidation;
 using MediatR;
 using System.Security.Claims;

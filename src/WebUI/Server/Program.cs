@@ -1,5 +1,5 @@
 using BoardGameTracker.Application;
-using BoardGameTracker.Application.Identity.Commands;
+using BoardGameTracker.Application.Authentication.Commands;
 using BoardGameTracker.Infrastructure;
 using BoardGameTracker.Infrastructure.Config;
 using BoardGameTracker.Server;

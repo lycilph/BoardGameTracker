@@ -1,5 +1,5 @@
-﻿using BoardGameTracker.Application.Identity.Commands;
-using BoardGameTracker.Application.Identity.DTO;
+﻿using BoardGameTracker.Application.Authentication.Commands;
+using BoardGameTracker.Application.Authentication.DTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BoardGameTracker.Server.Controllers;

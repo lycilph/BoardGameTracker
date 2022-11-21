@@ -1,4 +1,4 @@
-﻿using BoardGameTracker.Application.Identity.Data;
+﻿using BoardGameTracker.Application.Authentication.Data;
 using System.Security.Claims;
 
 namespace BoardGameTracker.Application.Common.Extensions;

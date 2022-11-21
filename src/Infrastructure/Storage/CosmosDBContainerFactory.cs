@@ -1,5 +1,5 @@
 ﻿using BoardGameTracker.Infrastructure.Config;
-using BoardGameTracker.Infrastructure.Contracts;
+using BoardGameTracker.Infrastructure.Storage.Contracts;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
