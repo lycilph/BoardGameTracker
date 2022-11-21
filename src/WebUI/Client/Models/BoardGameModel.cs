@@ -1,7 +1,7 @@
 ﻿using BoardGameTracker.Domain.Data;
 using System.Globalization;
 
-namespace BoardGameTracker.Client.Pages.Content.Models;
+namespace BoardGameTracker.Client.Models;
 
 public class BoardGameModel
 {

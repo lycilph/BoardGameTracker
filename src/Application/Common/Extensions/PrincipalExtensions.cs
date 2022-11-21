@@ -20,4 +20,14 @@ public static class PrincipalExtensions
     {
         return principal.FindFirstValue(CustomClaims.BGGUsername);
     }
+
+    public static string? GetUsername(this ClaimsPrincipal principal)
+    {
+        return principal.FindFirstValue(ClaimTypes.Name);
+    }
+
+    public static string? GetEmail(this ClaimsPrincipal principal)
+    {
+        return principal.FindFirstValue(ClaimTypes.Email);
+    }
 }

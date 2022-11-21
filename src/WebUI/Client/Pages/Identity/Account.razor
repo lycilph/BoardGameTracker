@@ -1,3 +1,60 @@
 ﻿@page "/identity/account"
 
-<h3>Account</h3>
+<MudPaper Elevation="25" Class="mb-2">
+    <MudToolBar>
+        <MudText Typo="Typo.h5">Account</MudText>
+    </MudToolBar>
+</MudPaper>
+
+<MudGrid>
+    <MudItem xs="12" sm="4" md="3">
+        <MudCard>
+            <MudCardContent>
+                <MudPaper class="d-flex justify-center py-4"
+                          Elevation="0">
+                    <MudAvatar Color="Color.Secondary"
+                               Style="height:75px; width:75px;">
+                        L
+                    </MudAvatar>
+                </MudPaper>
+                <MudText Class="mt-4">Username</MudText>
+                <MudText>BGG Username</MudText>
+                <MudText Class="mt-2">Account created:</MudText>
+                <MudText Class="mt-n2">2022-11-20</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+
+    <MudItem xs="12" sm="8" md="9">
+        <MudTabs Elevation="2"
+                 Rounded="true"
+                 ApplyEffectsToContainer="true"
+                 PanelClass="pa-6">
+            <MudTabPanel Text="Profile">
+                <MudTextField Label="Username" @bind-Value="username"/>
+                <MudTextField Label="BGG Username" @bind-Value="bgg_username"/>
+                <MudPaper Class="d-flex justify-end mt-6"
+                          Elevation="0">
+                    <MudButton>Update</MudButton>
+                </MudPaper>
+            </MudTabPanel>
+            <MudTabPanel Text="Email">
+                <MudTextField Label="Email" @bind-Value="email" />
+                <MudTextField T="string" Label="New Email" />
+                <MudPaper Class="d-flex justify-end mt-6"
+                          Elevation="0">
+                    <MudButton>Update</MudButton>
+                </MudPaper>
+            </MudTabPanel>
+            <MudTabPanel Text="Security">
+                <MudTextField T="string" Label="Password" />
+                <MudTextField T="string" Label="New password" />
+                <MudTextField T="string" Label="Confirm new password" />
+                <MudPaper Class="d-flex justify-end mt-6"
+                          Elevation="0">
+                    <MudButton>Update</MudButton>
+                </MudPaper>
+            </MudTabPanel>
+        </MudTabs>
+    </MudItem>
+</MudGrid>
