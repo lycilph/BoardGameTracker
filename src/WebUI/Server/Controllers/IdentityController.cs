@@ -10,6 +10,19 @@ namespace BoardGameTracker.Server.Controllers;
 [Authorize(Roles = RoleConstants.UserRole)]
 public class IdentityController : ApiControllerBase
 {
+    [HttpPost("UpdateAccount")]
+    public async Task<IActionResult> UpdateAccount([FromBody] UpdateAccountRequest request)
+    {
+        var response = await Mediator.Send(new UpdateAccountCommand(request));
+
+        if (response.IsNoOp)
+            return NoContent();
+        else if (response.IsSuccessful)
+            return Ok(response);
+        else
+            return BadRequest(response);
+    }
+
     [HttpPatch("UpdateBGGUsername")]
     public async Task<IActionResult> UpdateBGGUsername([FromBody] UpdateBGGUsernameRequest request)
     {

@@ -60,6 +60,11 @@ public class IdentityService : IIdentityService
         return await user_manager.GetRolesAsync(user);
     }
 
+    public string NormalizeUsername(string name)
+    {
+        return user_manager.NormalizeName(name);
+    }
+
     public async Task<bool> CheckPasswordAsync(ApplicationUser user, string password)
     {
         return await user_manager.CheckPasswordAsync(user, password);

@@ -61,9 +61,9 @@ public class AuthenticationClient : IAuthenticationClient
         else
         {
             if (response.Content!.Error.IsNullOrWhiteSpace())
-                logger.LogError(string.Join(",", response.Content.Errors));
+                logger.LogError("{errors}", string.Join(",", response.Content.Errors));
             else
-                logger.LogError(response.Content.Error);
+                logger.LogError("{error}", response.Content.Error);
         }
 
         return response;

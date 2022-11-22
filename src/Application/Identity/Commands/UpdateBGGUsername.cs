@@ -39,13 +39,14 @@ public class UpdateBGGUsernameCommandHandler : IRequestHandler<UpdateBGGUsername
         if (user == null)
             return UpdateBGGUsernameResponse.Failure("Unknown user");
 
-        if (user.BGGUsername != request.BGGUsername)
-        {
-            user.BGGUsername = request.BGGUsername;
-            await identity_service.UpdateUserAsync(user);
-            return UpdateBGGUsernameResponse.Success();
-        }
+        if (user.BGGUsername == request.BGGUsername)
+            return UpdateBGGUsernameResponse.NoOp();
 
-        return UpdateBGGUsernameResponse.NoOp();
+        user.BGGUsername = request.BGGUsername;
+        var response = await identity_service.UpdateUserAsync(user);
+        if (!response.Succeeded)
+            return UpdateBGGUsernameResponse.Failure(response.Errors.Select(e => e.Description));
+
+        return UpdateBGGUsernameResponse.Success();
     }
 }

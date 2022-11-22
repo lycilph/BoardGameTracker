@@ -13,5 +13,4 @@ public class UpdateBGGUsernameResponse
 
     public static UpdateBGGUsernameResponse Failure(string error) => new() { Error = error };
     public static UpdateBGGUsernameResponse Failure(IEnumerable<string> errors) => new() { Errors = errors };
-
 }

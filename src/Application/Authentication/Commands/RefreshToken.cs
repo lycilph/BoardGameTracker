@@ -39,10 +39,10 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, A
         var request = command.Request;
 
         var principal = token_service.GetPrincipalFromExpiredToken(request.Token);
-        var username = principal.Identity!.Name ?? string.Empty;
+        var userid = principal.GetUserId()!;
         var is_persistent = principal.IsPersistent();
 
-        var user = await identity_service.FindUserByNameAsync(username);
+        var user = await identity_service.FindUserByIdAsync(userid);
         if (user == null || user.RefreshToken != request.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
             return AuthenticationResponse.Failure("Invalid client request");
 

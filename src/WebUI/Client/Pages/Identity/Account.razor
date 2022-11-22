@@ -4,23 +4,28 @@
     <MudToolBar>
         <MudText Typo="Typo.h5">Account</MudText>
     </MudToolBar>
+    @if (state.IsLoading)
+    {
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
+    }
 </MudPaper>
 
 <MudGrid>
     <MudItem xs="12" sm="4" md="3">
         <MudCard>
             <MudCardContent>
-                <MudPaper class="d-flex justify-center py-4"
+                <MudPaper Class="d-flex justify-center py-4"
                           Elevation="0">
                     <MudAvatar Color="Color.Secondary"
                                Style="height:75px; width:75px;">
-                        L
+                        @username.ToUpper().FirstOrDefault()
                     </MudAvatar>
                 </MudPaper>
-                <MudText Class="mt-4">Username</MudText>
-                <MudText>BGG Username</MudText>
-                <MudText Class="mt-2">Account created:</MudText>
-                <MudText Class="mt-n2">2022-11-20</MudText>
+                <MudText Class="mt-4">User: @username</MudText>
+                <MudText>BGG: @bgg_username</MudText>
+                <MudText>Email: @email</MudText>
+                <MudText Typo="Typo.body2" Class="mt-2">Account created:</MudText>
+                <MudText Typo="Typo.body2" Class="mt-n2">[2022-11-20]</MudText>
             </MudCardContent>
         </MudCard>
     </MudItem>
@@ -30,13 +35,25 @@
                  Rounded="true"
                  ApplyEffectsToContainer="true"
                  PanelClass="pa-6">
-            <MudTabPanel Text="Profile">
-                <MudTextField Label="Username" @bind-Value="username"/>
-                <MudTextField Label="BGG Username" @bind-Value="bgg_username"/>
-                <MudPaper Class="d-flex justify-end mt-6"
-                          Elevation="0">
-                    <MudButton>Update</MudButton>
-                </MudPaper>
+            <MudTabPanel Text="Account">
+                <MudForm Model="@request" Validation="@ValidateValue" ValidationDelay="0">
+                    <MudTextField Label="Username"
+                                  For="@(() => request.Username)"
+                                  Immediate=true
+                                  OnlyValidateIfDirty=true
+                                  @bind-Value="request.Username" />
+                    <MudTextField Label="BoardGameGeek Username"
+                                  For="@(() => request.BGGUsername)"
+                                  Immediate=true
+                                  @bind-Value="request.BGGUsername" />
+                    <MudPaper Class="d-flex justify-end mt-6 mb-0"
+                              Elevation="0">
+                        <MudButton Variant="Variant.Text"
+                                   Color="Color.Primary"
+                                   Size="Size.Large"
+                                   OnClick="@(async () => await SubmitAsync())">Update</MudButton>
+                    </MudPaper>
+                </MudForm>
             </MudTabPanel>
             <MudTabPanel Text="Email">
                 <MudTextField Label="Email" @bind-Value="email" />

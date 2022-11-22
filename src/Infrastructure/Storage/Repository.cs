@@ -3,7 +3,6 @@ using BoardGameTracker.Infrastructure.Storage.Contracts;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Linq;
 using System.Linq.Expressions;
 using System.Net;
 
