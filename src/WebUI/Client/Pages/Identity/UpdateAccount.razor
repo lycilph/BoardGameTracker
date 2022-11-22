@@ -1,0 +1,18 @@
+﻿<MudForm Model="@request" Validation="@ValidateValue" ValidationDelay="0">
+    <MudTextField Label="Username"
+                  For="@(() => request.Username)"
+                  Immediate=true
+                  OnlyValidateIfDirty=true
+                  @bind-Value="request.Username" />
+    <MudTextField Label="BoardGameGeek Username"
+                  For="@(() => request.BGGUsername)"
+                  Immediate=true
+                  @bind-Value="request.BGGUsername" />
+    <MudPaper Class="d-flex justify-end mt-6 mb-0"
+              Elevation="0">
+        <MudButton Variant="Variant.Text"
+                   Color="Color.Primary"
+                   Size="Size.Large"
+                   OnClick="@(async () => await SubmitAsync())">Update</MudButton>
+    </MudPaper>
+</MudForm>

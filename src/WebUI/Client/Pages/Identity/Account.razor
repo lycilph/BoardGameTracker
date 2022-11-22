@@ -4,7 +4,7 @@
     <MudToolBar>
         <MudText Typo="Typo.h5">Account</MudText>
     </MudToolBar>
-    @if (state.IsLoading)
+    @if (loading)
     {
         <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
     }
@@ -36,24 +36,7 @@
                  ApplyEffectsToContainer="true"
                  PanelClass="pa-6">
             <MudTabPanel Text="Account">
-                <MudForm Model="@request" Validation="@ValidateValue" ValidationDelay="0">
-                    <MudTextField Label="Username"
-                                  For="@(() => request.Username)"
-                                  Immediate=true
-                                  OnlyValidateIfDirty=true
-                                  @bind-Value="request.Username" />
-                    <MudTextField Label="BoardGameGeek Username"
-                                  For="@(() => request.BGGUsername)"
-                                  Immediate=true
-                                  @bind-Value="request.BGGUsername" />
-                    <MudPaper Class="d-flex justify-end mt-6 mb-0"
-                              Elevation="0">
-                        <MudButton Variant="Variant.Text"
-                                   Color="Color.Primary"
-                                   Size="Size.Large"
-                                   OnClick="@(async () => await SubmitAsync())">Update</MudButton>
-                    </MudPaper>
-                </MudForm>
+                <UpdateAccount IsLoading="OnLoadingChanged"/>
             </MudTabPanel>
             <MudTabPanel Text="Email">
                 <MudTextField Label="Email" @bind-Value="email" />
