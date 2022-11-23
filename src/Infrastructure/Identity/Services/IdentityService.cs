@@ -75,9 +75,14 @@ public class IdentityService : IIdentityService
         return await user_manager.CheckPasswordAsync(user, password);
     }
 
-    public string HashPassword(ApplicationUser admin, string password)
+    public string HashPassword(ApplicationUser user, string password)
     {
-        return user_manager.PasswordHasher.HashPassword(admin, password);
+        return user_manager.PasswordHasher.HashPassword(user, password);
+    }
+
+    public Task<IdentityResult> ChangePasswordAsync(ApplicationUser user, string current_password, string new_password)
+    {
+        return user_manager.ChangePasswordAsync(user, current_password, new_password);
     }
 
     public async Task<string> GenerateEmailConfirmationTokenAsync(ApplicationUser user)

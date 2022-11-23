@@ -24,7 +24,8 @@ public interface IIdentityService
     string NormalizeEmail(string email);
 
     Task<bool> CheckPasswordAsync(ApplicationUser user, string password);
-    string HashPassword(ApplicationUser admin, string password);
+    string HashPassword(ApplicationUser user, string password);
+    Task<IdentityResult> ChangePasswordAsync(ApplicationUser user, string current_password, string new_password);
 
     Task<string> GenerateEmailConfirmationTokenAsync(ApplicationUser user);
     Task<IdentityResult> ConfirmEmailAsync(ApplicationUser user, string code);

@@ -24,8 +24,8 @@
                 <MudText Class="mt-4">User: @username</MudText>
                 <MudText>BGG: @bgg_username</MudText>
                 <MudText>Email: @email</MudText>
-                <MudText Typo="Typo.body2" Class="mt-2">Account created:</MudText>
-                <MudText Typo="Typo.body2" Class="mt-n2">[2022-11-20]</MudText>
+                <MudText Typo="Typo.body2" Class="mt-2">Account created: [2022-11-20]</MudText>
+                <MudText Typo="Typo.body2" Class="mt-n2">Last login: [2022-11-20]</MudText>
             </MudCardContent>
         </MudCard>
     </MudItem>
@@ -42,13 +42,7 @@
                 <UpdateEmail IsLoading="OnLoadingChanged" />
             </MudTabPanel>
             <MudTabPanel Text="Security">
-                <MudTextField T="string" Label="Password" />
-                <MudTextField T="string" Label="New password" />
-                <MudTextField T="string" Label="Confirm new password" />
-                <MudPaper Class="d-flex justify-end mt-6"
-                          Elevation="0">
-                    <MudButton>Update</MudButton>
-                </MudPaper>
+                <UpdatePassword IsLoading="OnLoadingChanged"/>
             </MudTabPanel>
             <MudTabPanel Text="Other">
                 <MudText Typo="Typo.h6" Color="Color.Error">Delete Account</MudText>

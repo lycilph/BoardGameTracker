@@ -37,6 +37,17 @@ public class IdentityController : ApiControllerBase
             return BadRequest(response);
     }
 
+    [HttpPost("UpdatePassword")]
+    public async Task<IActionResult> UpdatePassword([FromBody] UpdatePasswordRequest request)
+    {
+        var response = await Mediator.Send(new UpdatePasswordCommand(request));
+
+        if (response.IsSuccessful)
+            return Ok(response);
+        else
+            return BadRequest(response);
+    }
+
     [HttpPatch("UpdateBGGUsername")]
     public async Task<IActionResult> UpdateBGGUsername([FromBody] UpdateBGGUsernameRequest request)
     {

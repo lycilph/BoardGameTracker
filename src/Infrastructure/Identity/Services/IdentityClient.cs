@@ -75,4 +75,10 @@ public class IdentityClient : IIdentityClient
 
         return await response.Content.ReadFromJsonAsync<UpdateEmailResponse>() ?? UpdateEmailResponse.NoOp();
     }
+
+    public async Task<UpdatePasswordResponse> UpdatePassword(UpdatePasswordRequest request)
+    {
+        var response = await client.PostAsJsonAsync("UpdatePassword", request);
+        return await response.Content.ReadFromJsonAsync<UpdatePasswordResponse>() ?? UpdatePasswordResponse.Failure("Unknown error");
+    }
 }
