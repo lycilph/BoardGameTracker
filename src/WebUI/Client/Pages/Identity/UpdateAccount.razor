@@ -1,4 +1,16 @@
 ﻿<MudForm Model="@request" Validation="@ValidateValue" ValidationDelay="0">
+    @if (show_errors)
+    {
+        <MudPaper Class="d-flex justify-center" Elevation="0">
+            <MudAlert Severity="Severity.Warning">
+                @foreach (var error in errors)
+                {
+                    <p>@error</p>
+                }
+            </MudAlert>
+        </MudPaper>
+    }
+
     <MudTextField Label="Username"
                   For="@(() => request.Username)"
                   Immediate=true

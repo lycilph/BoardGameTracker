@@ -21,6 +21,7 @@ public interface IIdentityService
     Task<IEnumerable<string>> GetRolesForUserAsync(ApplicationUser user);
 
     string NormalizeUsername(string name);
+    string NormalizeEmail(string email);
 
     Task<bool> CheckPasswordAsync(ApplicationUser user, string password);
     string HashPassword(ApplicationUser admin, string password);

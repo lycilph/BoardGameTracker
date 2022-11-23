@@ -23,6 +23,20 @@ public class IdentityController : ApiControllerBase
             return BadRequest(response);
     }
 
+    [HttpPost("UpdateEmail")]
+    public async Task<IActionResult> UpdateEmail([FromBody] UpdateEmailRequest request)
+    {
+        var origin = Request.Headers["origin"];
+        var response = await Mediator.Send(new UpdateEmailCommand(request, origin));
+
+        if (response.IsNoOp)
+            return NoContent();
+        else if (response.IsSuccessful)
+            return Ok(response);
+        else
+            return BadRequest(response);
+    }
+
     [HttpPatch("UpdateBGGUsername")]
     public async Task<IActionResult> UpdateBGGUsername([FromBody] UpdateBGGUsernameRequest request)
     {

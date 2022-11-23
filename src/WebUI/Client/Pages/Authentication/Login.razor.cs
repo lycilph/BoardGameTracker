@@ -17,6 +17,9 @@ public partial class Login
     private bool show_errors = false;
     private IEnumerable<string> errors = new List<string>();
 
+    [Parameter]
+    public string Context { get; set; } = string.Empty;
+
     [Inject]
     public IValidator<LoginRequest> Validator { get; set; } = null!;
     [Inject]
@@ -32,6 +35,12 @@ public partial class Login
         {
             await input_ref.FocusAsync();
         }
+    }
+
+    protected override void OnInitialized()
+    {
+        if (Context.Equals("emailconfirmed", StringComparison.InvariantCultureIgnoreCase))
+            Snackbar.Add("Your email have been confirmed", MudBlazor.Severity.Info);
     }
 
     public Func<object, string, Task<IEnumerable<string>>> ValidateValue => async (model, propertyName) =>

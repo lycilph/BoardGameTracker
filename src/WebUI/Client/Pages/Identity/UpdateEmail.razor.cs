@@ -1,38 +1,41 @@
-using BoardGameTracker.Application.Common.Extensions;
 using BoardGameTracker.Application.Identity.DTO;
-using BoardGameTracker.Application.Identity.Services;
-using BoardGameTracker.Client.Extensions;
-using FluentValidation;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components;
+using BoardGameTracker.Application.Common.Extensions;
+using FluentValidation;
+using BoardGameTracker.Application.Identity.Services;
 using MudBlazor;
+using BoardGameTracker.Client.Extensions;
 
 namespace BoardGameTracker.Client.Pages.Identity;
 
-public partial class UpdateAccount
+public partial class UpdateEmail
 {
-    private readonly UpdateAccountRequest request = new();
+    private readonly UpdateEmailRequest request = new();
 
+    private bool show_dialog = false;
     private bool show_errors = false;
     private IEnumerable<string> errors = new List<string>();
 
     [CascadingParameter]
     public Task<AuthenticationState> AuthenticationStateTask { get; set; } = null!;
-
+    
     [Parameter]
     public EventCallback<bool> IsLoading { get; set; }
 
     [Inject]
-    public IValidator<UpdateAccountRequest> Validator { get; set; } = null!;
+    public IValidator<UpdateEmailRequest> Validator { get; set; } = null!;
     [Inject]
     public IIdentityClient Client { get; set; } = null!;
     [Inject]
     public ISnackbar Snackbar { get; set; } = null!;
+    [Inject]
+    public NavigationManager NavigationManager { get; set; } = null!;
 
     public Func<object, string, Task<IEnumerable<string>>> ValidateValue => async (model, propertyName) =>
     {
         var result = await Validator.ValidateAsync(
-            ValidationContext<UpdateAccountRequest>.CreateWithOptions(
+            ValidationContext<UpdateEmailRequest>.CreateWithOptions(
                 request, x => x.IncludeProperties(propertyName)));
         if (result.IsValid)
             return Array.Empty<string>();
@@ -45,8 +48,7 @@ public partial class UpdateAccount
         var user = auth_state.User;
 
         request.UserId = user.GetUserId()!;
-        request.Username = user.GetUsername() ?? string.Empty;
-        request.BGGUsername = user.GetBGGUsername() ?? string.Empty;
+        request.Email = user.GetEmail() ?? string.Empty;
     }
 
     private async Task SubmitAsync()
@@ -63,12 +65,31 @@ public partial class UpdateAccount
             return;
         }
 
-        var response = await Client.UpdateAccount(request);
+        show_dialog = true;
+    }
+
+    private async Task OnLoadingChangedHandlerAsync(bool is_loading)
+    {
+        await IsLoading.InvokeAsync(is_loading);
+    }
+
+    private async Task CancelAsync() 
+    {
+        show_dialog = false;
+        await OnLoadingChangedHandlerAsync(false);
+    }
+
+    private async Task OkAsync()
+    {
+        show_dialog = false;
+
+        var response = await Client.UpdateEmail(request);
 
         if (response.IsSuccessful)
         {
-            Snackbar.Add("Account updated", MudBlazor.Severity.Info);
-            StateHasChanged();
+            Snackbar.Add("Email updated", MudBlazor.Severity.Info);
+            Snackbar.Add("Please confirm your email to activate your account", MudBlazor.Severity.Info);
+            NavigationManager.NavigateTo("/authentication/logout");
         }
         else if (response.IsNoOp)
             Snackbar.Add("Nothing to update", MudBlazor.Severity.Info);
@@ -79,10 +100,5 @@ public partial class UpdateAccount
         }
 
         await OnLoadingChangedHandlerAsync(false);
-    }
-
-    private async Task OnLoadingChangedHandlerAsync(bool is_loading)
-    {
-        await IsLoading.InvokeAsync(is_loading);
     }
 }

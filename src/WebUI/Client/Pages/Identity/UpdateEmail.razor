@@ -1,0 +1,43 @@
+﻿<MudForm Model="@request" Validation="@ValidateValue" ValidationDelay="0">
+    @if (show_errors)
+    {
+            <MudPaper Class="d-flex justify-center" Elevation="0">
+                <MudAlert Severity="Severity.Warning">
+                @foreach (var error in errors)
+                {
+                            <p>@error</p>
+                }
+                </MudAlert>
+            </MudPaper>
+    }
+
+    <MudTextField Label="Email"
+                  @bind-Value="request.Email" 
+                  Disabled=true/>
+    <MudTextField Label="New Email"
+                  For="@(() => request.NewEmail)"
+                  Immediate=true
+                  OnlyValidateIfDirty=true
+                  @bind-Value="request.NewEmail" />
+    <MudPaper Class="d-flex justify-end mt-6 mb-0"
+              Elevation="0">
+        <MudButton Variant="Variant.Text"
+                   Color="Color.Primary"
+                   Size="Size.Large"
+                   OnClick="@(async () => await SubmitAsync())">Update</MudButton>
+    </MudPaper>
+</MudForm>
+
+<MudDialog @bind-IsVisible="show_dialog">
+    <TitleContent>
+        <MudText Typo="Typo.h6">Warning</MudText>
+    </TitleContent>
+    <DialogContent>
+        <p>When you change your email, you will be logged out and you have to confirm it again, before you can log in</p>
+        <p>Do you want to continue?</p>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="CancelAsync">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="OkAsync">Ok</MudButton>
+    </DialogActions>
+</MudDialog>

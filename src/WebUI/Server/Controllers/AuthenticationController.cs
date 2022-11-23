@@ -46,7 +46,7 @@ public class AuthenticationController : ApiControllerBase
         var response = await Mediator.Send(new ConfirmEmailCommand(userid, code));
 
         if (response.IsSuccessful)
-            return Redirect("/authentication/login");
+            return Redirect("/authentication/login/EmailConfirmed");
         else
             return BadRequest(response.Errors.Any() ? response.Errors : response.Error);
     }

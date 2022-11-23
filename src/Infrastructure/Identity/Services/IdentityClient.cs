@@ -57,4 +57,22 @@ public class IdentityClient : IIdentityClient
 
         return await response.Content.ReadFromJsonAsync<UpdateAccountResponse>() ?? UpdateAccountResponse.NoOp();
     }
+
+    public async Task<UpdateEmailResponse> UpdateEmail(UpdateEmailRequest request)
+    {
+        var response = await client.PostAsJsonAsync("UpdateEmail", request);
+
+        // If code is NoContent, this is a no-op from the controller, and the tokens doesn't need to be refreshed
+        if (response.IsSuccessStatusCode && response.StatusCode == HttpStatusCode.NoContent)
+            return UpdateEmailResponse.NoOp();
+
+        // The tokens needs to be updated here, as the email claim is not updated otherwise
+        if (response.IsSuccessStatusCode)
+        {
+            await authentication_client.RefreshToken();
+            await auth_provider.NotifyUserAuthentication();
+        }
+
+        return await response.Content.ReadFromJsonAsync<UpdateEmailResponse>() ?? UpdateEmailResponse.NoOp();
+    }
 }

@@ -36,15 +36,10 @@
                  ApplyEffectsToContainer="true"
                  PanelClass="pa-6">
             <MudTabPanel Text="Account">
-                <UpdateAccount IsLoading="OnLoadingChanged"/>
+                <UpdateAccount IsLoading="OnLoadingChanged" />
             </MudTabPanel>
             <MudTabPanel Text="Email">
-                <MudTextField Label="Email" @bind-Value="email" />
-                <MudTextField T="string" Label="New Email" />
-                <MudPaper Class="d-flex justify-end mt-6"
-                          Elevation="0">
-                    <MudButton>Update</MudButton>
-                </MudPaper>
+                <UpdateEmail IsLoading="OnLoadingChanged" />
             </MudTabPanel>
             <MudTabPanel Text="Security">
                 <MudTextField T="string" Label="Password" />
@@ -54,6 +49,15 @@
                           Elevation="0">
                     <MudButton>Update</MudButton>
                 </MudPaper>
+            </MudTabPanel>
+            <MudTabPanel Text="Other">
+                <MudText Typo="Typo.h6" Color="Color.Error">Delete Account</MudText>
+                <MudText>Once you delete your account, there is no going back. Please be certain</MudText>
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Error"
+                           Size="Size.Large">
+                    Delete Account
+                </MudButton>
             </MudTabPanel>
         </MudTabs>
     </MudItem>

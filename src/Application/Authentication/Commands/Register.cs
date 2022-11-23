@@ -1,12 +1,9 @@
 ﻿using BoardGameTracker.Application.Authentication.Data;
 using BoardGameTracker.Application.Authentication.DTO;
-using BoardGameTracker.Application.Contracts;
 using BoardGameTracker.Application.Identity.Services;
+using BoardGameTracker.Application.Services.Mail;
 using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.WebUtilities;
-using System.Text;
-using System.Text.Encodings.Web;
 
 namespace BoardGameTracker.Application.Authentication.Commands;
 
@@ -25,13 +22,13 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterCommand, Authe
 {
     private readonly IValidator<RegisterCommand> validator;
     private readonly IIdentityService identity_service;
-    private readonly IMailSender mail;
+    private readonly IMailService mail_service;
 
-    public RegisterUserCommandHandler(IValidator<RegisterCommand> validator, IIdentityService identity_service, IMailSender mail)
+    public RegisterUserCommandHandler(IValidator<RegisterCommand> validator, IIdentityService identity_service, IMailService mail_service)
     {
         this.validator = validator;
         this.identity_service = identity_service;
-        this.mail = mail;
+        this.mail_service = mail_service;
     }
 
     public async Task<AuthenticationResponse> Handle(RegisterCommand command, CancellationToken cancellationToken)
@@ -70,16 +67,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterCommand, Authe
         if (!bgg_username_result.Succeeded)
             return AuthenticationResponse.Failure(create_result.Errors.Select(e => e.Description));
 
-
-        var code = await identity_service.GenerateEmailConfirmationTokenAsync(user);
-        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-
-        var uri = new Uri($"{command.Origin}/api/authentication/confirmemail/");
-        var url = QueryHelpers.AddQueryString(uri.ToString(), "userid", user.Id);
-        url = QueryHelpers.AddQueryString(url, "code", code);
-
-        var message = $"Please confirm you email by <a href='{HtmlEncoder.Default.Encode(url)}'>clicking here</a>";
-        await mail.SendEmailAsync(user.Email, "Confirm email", message);
+        await mail_service.SendConfirmationEmail(user, command.Origin);
 
         return AuthenticationResponse.Success();
     }

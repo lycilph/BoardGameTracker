@@ -5,6 +5,7 @@ using BoardGameTracker.Application.Authentication.Services;
 using BoardGameTracker.Application.Authentication.Storage;
 using BoardGameTracker.Application.Contracts;
 using BoardGameTracker.Application.Identity.Services;
+using BoardGameTracker.Application.Services.Mail;
 using BoardGameTracker.Infrastructure.Authentication.Services;
 using BoardGameTracker.Infrastructure.Config;
 using BoardGameTracker.Infrastructure.Identity.Services;
@@ -51,7 +52,8 @@ public static class ConfigureServices
             .AddRoleStore<ApplicationRoleStore>()
             .AddDefaultTokenProviders();
 
-        services.AddScoped<IMailSender, SmtpMailSender>(); 
+        services.AddScoped<IMailSender, SmtpMailSender>();
+        services.AddScoped<IMailService, MailService>();
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddScoped<IApplicationContext, ApplicationContext>();
         services.AddScoped<ITokenService, TokenService>();

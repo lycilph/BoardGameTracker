@@ -64,6 +64,11 @@ public class IdentityService : IIdentityService
     {
         return user_manager.NormalizeName(name);
     }
+    
+    public string NormalizeEmail(string email)
+    {
+        return user_manager.NormalizeEmail(email);
+    }
 
     public async Task<bool> CheckPasswordAsync(ApplicationUser user, string password)
     {
