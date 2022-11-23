@@ -95,6 +95,11 @@ public class IdentityService : IIdentityService
         return await user_manager.ConfirmEmailAsync(user, code);
     }
 
+    public async Task<IdentityResult> SetEmailAsync(ApplicationUser user, string email)
+    {
+        return await user_manager.SetEmailAsync(user, email);
+    }
+
     public async Task<bool> IsEmailConfirmedAsync(ApplicationUser user)
     {
         return await user_manager.IsEmailConfirmedAsync(user);

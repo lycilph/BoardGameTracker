@@ -51,9 +51,7 @@ public class UpdateEmailCommandHandler : IRequestHandler<UpdateEmailCommand, Upd
         if (temp != null && temp.Id != user.Id)
             return UpdateEmailResponse.Failure("Email already taken");
 
-        user.Email = request.NewEmail;
-        user.EmailConfirmed = false;
-        var response = await identity_service.UpdateUserAsync(user);
+        var response = await identity_service.SetEmailAsync(user, request.NewEmail);
         if (!response.Succeeded)
             return UpdateEmailResponse.Failure(response.Errors.Select(e => e.Description));
 

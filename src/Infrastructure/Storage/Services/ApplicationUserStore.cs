@@ -65,11 +65,6 @@ public class ApplicationUserStore :
         throw new NotImplementedException();
     }
 
-    public Task SetEmailAsync(ApplicationUser user, string? email, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
     public Task SetPhoneNumberAsync(ApplicationUser user, string? phoneNumber, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
@@ -260,6 +255,12 @@ public class ApplicationUserStore :
     public Task SetEmailConfirmedAsync(ApplicationUser user, bool confirmed, CancellationToken cancellationToken)
     {
         SetUserProperty(user, confirmed, (u, m) => u.EmailConfirmed = confirmed, cancellationToken);
+        return Task.CompletedTask;
+    }
+
+    public Task SetEmailAsync(ApplicationUser user, string? email, CancellationToken cancellationToken)
+    {
+        SetUserProperty(user, email, (u, m) => u.Email = email, cancellationToken);
         return Task.CompletedTask;
     }
 
