@@ -46,7 +46,7 @@ public class Program
         }
 
         app.UseSwagger();
-        app.UseSwaggerUI();
+        app.UseSwaggerUI(cfg => { cfg.DefaultModelsExpandDepth(-1); });
 
         app.UseSeriLogging();
 
