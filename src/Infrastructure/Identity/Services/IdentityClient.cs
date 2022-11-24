@@ -93,4 +93,16 @@ public class IdentityClient : IIdentityClient
         var response = await client.PostAsJsonAsync("UpdatePassword", request);
         return await response.Content.ReadFromJsonAsync<UpdatePasswordResponse>() ?? UpdatePasswordResponse.Failure("Unknown error");
     }
+
+    public async Task<GetUserInfoResponse> GetUserInfo(string userid)
+    {
+        try 
+        {
+            return await client.GetFromJsonAsync<GetUserInfoResponse>($"GetUserInfo/{userid}") ?? GetUserInfoResponse.Failure("Couldn't get user info");
+        }
+        catch (Exception e)
+        {
+            return GetUserInfoResponse.Failure($"Error getting user info {e.Message}");
+        }
+    }
 }

@@ -4,6 +4,7 @@ using BoardGameTracker.Application.Identity.DTO;
 using BoardGameTracker.Application.Identity.Query;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace BoardGameTracker.Server.Controllers;
 
@@ -82,6 +83,17 @@ public class IdentityController : ApiControllerBase
 
         if (response.IsSuccessful)
             return Ok(response.UserId);
+        else
+            return BadRequest(response.Errors);
+    }
+
+    [HttpGet("GetUserInfo/{userid}")]
+    public async Task<IActionResult> GetUserInfo([FromRoute] string userid)
+    {
+        var response = await Mediator.Send(new GetUserInfoQuery(userid));
+
+        if (response.IsSuccessful)
+            return Ok(response);
         else
             return BadRequest(response.Errors);
     }

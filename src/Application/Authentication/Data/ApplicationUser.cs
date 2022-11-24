@@ -23,4 +23,7 @@ public class ApplicationUser : IdentityUser, IItem
     public string RefreshToken { get; set; } = string.Empty;
     public DateTime RefreshTokenExpiryTime { get; set; } = DateTime.UtcNow;
     public string BGGUsername { get; set; } = string.Empty;
+
+    public DateTime AccountCreated { get; set; } = DateTime.UtcNow;
+    public DateTime LastActive { get; set; } = DateTime.UtcNow;
 }

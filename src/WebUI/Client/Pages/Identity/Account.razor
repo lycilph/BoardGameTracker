@@ -21,11 +21,29 @@
                         @username.ToUpper().FirstOrDefault()
                     </MudAvatar>
                 </MudPaper>
-                <MudText Class="mt-4">User: @username</MudText>
-                <MudText>BGG: @bgg_username</MudText>
-                <MudText>Email: @email</MudText>
-                <MudText Typo="Typo.body2" Class="mt-2">Account created: [2022-11-20]</MudText>
-                <MudText Typo="Typo.body2" Class="mt-n2">Last login: [2022-11-20]</MudText>
+                <MudPaper Class="d-flex justify-start gap-4 py-4" Elevation="0">
+                    <MudStack>
+                        <MudText>User</MudText>
+                        <MudText>BGG</MudText>
+                        <MudText>Email</MudText>
+                    </MudStack>
+                    <MudStack>
+                        <MudText>@username</MudText>
+                        <MudText>@bgg_username</MudText>
+                        <MudText>@email</MudText>
+                    </MudStack>
+                </MudPaper>
+
+                <MudPaper Class="d-flex justify-start gap-4 py-4" Elevation="0">
+                    <MudStack>
+                        <MudText Typo="Typo.body2">Account created</MudText>
+                        <MudText Typo="Typo.body2" Class="mt-n2">Last active</MudText>
+                    </MudStack>
+                    <MudStack>
+                        <MudText Typo="Typo.body2">@account_created</MudText>
+                        <MudText Typo="Typo.body2" Class="mt-n2">@last_active</MudText>
+                    </MudStack>
+                </MudPaper>
             </MudCardContent>
         </MudCard>
     </MudItem>

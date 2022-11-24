@@ -9,4 +9,5 @@ public interface IIdentityClient
     Task<UpdateAccountResponse> UpdateAccount(UpdateAccountRequest request);
     Task<UpdateEmailResponse> UpdateEmail(UpdateEmailRequest request);
     Task<UpdatePasswordResponse> UpdatePassword(UpdatePasswordRequest request);
+    Task<GetUserInfoResponse> GetUserInfo(string userid);
 }

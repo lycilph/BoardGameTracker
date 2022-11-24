@@ -48,6 +48,9 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, AuthenticationR
 
         (var token, var refresh_token) = await token_service.GenerateTokensAsync(user, request.RememberMe);
 
+        // Update LastActive field here
+        user.LastActive = DateTime.Now;
+
         // This is used when refreshing the access tokens
         user.RefreshToken = refresh_token;
         user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);

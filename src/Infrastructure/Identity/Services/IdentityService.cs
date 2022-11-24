@@ -17,6 +17,7 @@ public class IdentityService : IIdentityService
 
     public async Task<IdentityResult> CreateUserAsync(ApplicationUser user, string password)
     {
+        user.AccountCreated = DateTime.Now;
         return await user_manager.CreateAsync(user, password);
     }
 

@@ -42,7 +42,7 @@ public partial class UpdateEmail
         return result.Errors.Select(e => e.ErrorMessage);
     };
 
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnInitializedAsync()
     {
         var auth_state = await AuthenticationStateTask;
         var user = auth_state.User;

@@ -50,7 +50,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterCommand, Authe
         if (user_from_email != null)
             return AuthenticationResponse.Failure($"Email {request.Email} is already in use");
 
-        // Add user
+        // Create user
         var user = new ApplicationUser { UserName = request.Username, Email = request.Email };
         var create_result = await identity_service.CreateUserAsync(user, request.Password);
         if (!create_result.Succeeded)

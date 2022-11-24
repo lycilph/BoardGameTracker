@@ -48,6 +48,9 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, A
 
         (var token, var refresh_token) = await token_service.GenerateTokensAsync(user, is_persistent);
 
+        // Update LastActive field here
+        user.LastActive = DateTime.Now;
+
         user.RefreshToken = refresh_token;
         await identity_service.UpdateUserAsync(user);
 
