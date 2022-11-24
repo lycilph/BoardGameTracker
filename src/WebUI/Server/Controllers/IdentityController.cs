@@ -27,7 +27,7 @@ public class IdentityController : ApiControllerBase
     public async Task<IActionResult> UpdateEmail([FromBody] UpdateEmailRequest request)
     {
         var origin = Request.Headers["origin"];
-        var response = await Mediator.Send(new UpdateEmailCommand(request, origin));
+        var response = await Mediator.Send(new UpdateEmailCommand(request, origin!));
 
         if (response.IsNoOp)
             return NoContent();
@@ -59,6 +59,17 @@ public class IdentityController : ApiControllerBase
             return Ok(response);
         else
             return BadRequest(response.Errors.Any() ? response.Errors : response.Error);
+    }
+
+    [HttpDelete("DeleteAccount/{userid}")]
+    public async Task<IActionResult> DeleteAccount([FromRoute] string userid)
+    {
+        var response = await Mediator.Send(new DeleteAccountCommand(userid));
+
+        if (response.IsSuccessful)
+            return Ok();
+        else
+            return BadRequest(response.Errors.Any() ? string.Join(",", response.Errors) : response.Error);
     }
 
     [HttpGet("GetUserId")]

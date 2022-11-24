@@ -35,6 +35,11 @@ public class IdentityService : IIdentityService
         return await user_manager.AddToRoleAsync(user, role);
     }
 
+    public async Task<IdentityResult> DeleteUserAsync(ApplicationUser user)
+    {
+        return await user_manager.DeleteAsync(user);
+    }
+
     public async Task<ApplicationUser?> FindUserByIdAsync(string id)
     {
         return await user_manager.FindByIdAsync(id);

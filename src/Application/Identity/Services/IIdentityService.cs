@@ -11,6 +11,8 @@ public interface IIdentityService
     Task<IdentityResult> UpdateUserAsync(ApplicationUser user);
 
     Task<IdentityResult> AddUserToRoleAsync(ApplicationUser user, string role);
+    
+    Task<IdentityResult> DeleteUserAsync(ApplicationUser user);
 
     Task<ApplicationUser?> FindUserByIdAsync(string id);
     Task<ApplicationUser?> FindUserByEmailAsync(string email);

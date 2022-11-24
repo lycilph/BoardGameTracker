@@ -1,0 +1,22 @@
+﻿<MudText Typo="Typo.h6" Color="Color.Error">Delete Account</MudText>
+<MudText>Once you delete your account, there is no going back. Please be certain</MudText>
+<MudButton Variant="Variant.Filled"
+           Color="Color.Error"
+           Size="Size.Large"
+           OnClick="Delete">
+    Delete Account
+</MudButton>
+
+<MudDialog @bind-IsVisible="show_dialog">
+    <TitleContent>
+        <MudText Typo="Typo.h6" Color="Color.Error">Deleting Account!</MudText>
+    </TitleContent>
+    <DialogContent>
+        <p>You are about to delete your account. This cannot be undone!</p>
+        <p>Do you want to continue?</p>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="CancelAsync">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="OkAsync">Ok</MudButton>
+    </DialogActions>
+</MudDialog>

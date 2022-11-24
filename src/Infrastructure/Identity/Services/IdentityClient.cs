@@ -2,6 +2,7 @@
 using BoardGameTracker.Application.Authentication.Services;
 using BoardGameTracker.Application.Identity.DTO;
 using BoardGameTracker.Application.Identity.Services;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Net;
 using System.Net.Http.Json;
@@ -13,23 +14,34 @@ public class IdentityClient : IIdentityClient
     private readonly HttpClient client;
     private readonly IAuthenticationClient authentication_client;
     private readonly JwtAuthenticationStateProvider auth_provider;
+    private readonly NavigationManager navigation_manager;
 
-    public IdentityClient(HttpClient client, IAuthenticationClient authentication_client, AuthenticationStateProvider auth_provider)
+    public IdentityClient(HttpClient client, IAuthenticationClient authentication_client, AuthenticationStateProvider auth_provider, NavigationManager navigation_manager)
     {
         this.client = client;
         this.authentication_client = authentication_client;
         this.auth_provider = auth_provider as JwtAuthenticationStateProvider ?? throw new ArgumentException(nameof(AuthenticationStateProvider));
+        this.navigation_manager = navigation_manager;
+    }
+
+    public async Task DeleteAccount(string userid)
+    {
+        var response = await client.DeleteAsync($"DeleteAccount/{userid}");
+        if (response.IsSuccessStatusCode)
+        {
+            navigation_manager.NavigateTo("/authentication/logout");
+        }
+        else
+        {
+            var msg = await response.Content.ReadAsStringAsync();
+            throw new InvalidOperationException(msg);
+        }
     }
 
     public async Task UpdateBGGUsername(string userid, string bgg_username)
     {
         var update_request = new UpdateBGGUsernameRequest { UserId = userid, BGGUsername = bgg_username };
-        var request = new HttpRequestMessage(HttpMethod.Patch, "UpdateBGGUsername")
-        {
-            Content = JsonContent.Create(update_request)
-        };
-
-        var response = await client.SendAsync(request);
+        var response = await client.PatchAsJsonAsync("UpdateBGGUsername", update_request);
 
         // If code is NoContent, this is a no-op from the controller, and the tokens doesn't need to be refreshed
         if (response.IsSuccessStatusCode && response.StatusCode != HttpStatusCode.NoContent)

@@ -19,4 +19,7 @@ public interface IRepository<TItem> where TItem : IItem
 
     Task<TItem> UpdateAsync(TItem value, CancellationToken cancellationToken = default);
     Task UpdateAsync(IEnumerable<TItem> values, CancellationToken cancellationToken = default);
+
+    Task DeleteAsync(string id, string? partitionKeyValue = null, CancellationToken cancellationToken = default);
+    Task DeleteAsync(string id, PartitionKey partitionKey, CancellationToken cancellationToken = default);
 }

@@ -140,4 +140,12 @@ public class Repository<TItem> : IRepository<TItem> where TItem : IItem
             await Task.WhenAll(tasks);
         }
     }
+
+    public Task DeleteAsync(string id, string? partitionKeyValue = null, CancellationToken cancellationToken = default)
+     => DeleteAsync(id, new PartitionKey(partitionKeyValue ?? id), cancellationToken);
+
+    public async Task DeleteAsync(string id, PartitionKey partitionKey, CancellationToken cancellationToken = default)
+    {
+        await container.DeleteItemAsync<TItem>(id, partitionKey, cancellationToken: cancellationToken);
+    }
 }

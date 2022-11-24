@@ -42,16 +42,10 @@
                 <UpdateEmail IsLoading="OnLoadingChanged" />
             </MudTabPanel>
             <MudTabPanel Text="Security">
-                <UpdatePassword IsLoading="OnLoadingChanged"/>
+                <UpdatePassword IsLoading="OnLoadingChanged" />
             </MudTabPanel>
             <MudTabPanel Text="Other">
-                <MudText Typo="Typo.h6" Color="Color.Error">Delete Account</MudText>
-                <MudText>Once you delete your account, there is no going back. Please be certain</MudText>
-                <MudButton Variant="Variant.Filled"
-                           Color="Color.Error"
-                           Size="Size.Large">
-                    Delete Account
-                </MudButton>
+                <DeleteAccount IsLoading="OnLoadingChanged" />
             </MudTabPanel>
         </MudTabs>
     </MudItem>

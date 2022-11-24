@@ -25,11 +25,6 @@ public class ApplicationUserStore :
     #region NOT IMPLEMENTED YET
     public IQueryable<ApplicationUser> Users => throw new NotImplementedException();
 
-    public Task<IdentityResult> DeleteAsync(ApplicationUser user, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
     public Task<string?> GetNormalizedEmailAsync(ApplicationUser user, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
@@ -111,6 +106,25 @@ public class ApplicationUserStore :
         try
         {
             await context.Users.UpdateAsync(user, cancellationToken);
+            return IdentityResult.Success;
+        }
+        catch (Exception ex)
+        {
+            return IdentityResult.Failed(new IdentityError { Description = ex.Message });
+        }
+    }
+
+
+    public async Task<IdentityResult> DeleteAsync(ApplicationUser user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        try
+        {
+            await context.Users.DeleteAsync(user.Id, cancellationToken: cancellationToken);
             return IdentityResult.Success;
         }
         catch (Exception ex)
