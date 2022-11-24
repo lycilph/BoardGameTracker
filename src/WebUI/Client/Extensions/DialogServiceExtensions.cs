@@ -12,7 +12,7 @@ public static class DialogServiceExtensions
         {
             CloseOnEscapeKey = true,
             NoHeader = true,
-            MaxWidth = MaxWidth.Large
+            MaxWidth = MaxWidth.Medium
         };
         var parameters = new DialogParameters { ["Game"] = game };
 

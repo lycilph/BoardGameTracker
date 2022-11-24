@@ -13,7 +13,7 @@
 <MudGrid>
     <MudItem xs="12" sm="4" md="3">
         <MudCard>
-            <MudCardContent>
+            <MudCardContent Style="position:relative;">
                 <MudPaper Class="d-flex justify-center py-4"
                           Elevation="0">
                     <MudAvatar Color="Color.Secondary"
@@ -36,7 +36,7 @@
 
                 <MudPaper Class="d-flex justify-start gap-4 py-4" Elevation="0">
                     <MudStack>
-                        <MudText Typo="Typo.body2">Account created</MudText>
+                        <MudText Typo="Typo.body2">Created</MudText>
                         <MudText Typo="Typo.body2" Class="mt-n2">Last active</MudText>
                     </MudStack>
                     <MudStack>
@@ -44,6 +44,9 @@
                         <MudText Typo="Typo.body2" Class="mt-n2">@last_active</MudText>
                     </MudStack>
                 </MudPaper>
+                <MudOverlay Visible="card_loading" LightBackground="true" Absolute="true">
+                    <MudProgressCircular Color="Color.Secondary" Size="Size.Large" Indeterminate="true" />
+                </MudOverlay>
             </MudCardContent>
         </MudCard>
     </MudItem>

@@ -14,6 +14,7 @@ public partial class Account
     private string account_created = string.Empty;
     private string last_active = string.Empty;
     private bool loading = false;
+    private bool card_loading = false;
 
     [CascadingParameter]
     public Task<AuthenticationState> AuthenticationStateTask { get; set; } = null!;
@@ -33,9 +34,13 @@ public partial class Account
 
         if (account_created.IsNullOrWhiteSpace() && !userid.IsNullOrWhiteSpace())
         {
+            card_loading = true;
+            
             var info = await Client.GetUserInfo(userid);
             account_created = info.AccountCreated.ToShortDateString();
             last_active = $"{info.LastActive.ToShortDateString()} - {info.LastActive.ToShortTimeString()}";
+
+            card_loading = false;
         }
     }
 
