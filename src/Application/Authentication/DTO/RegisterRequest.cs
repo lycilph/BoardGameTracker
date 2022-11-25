@@ -15,8 +15,8 @@ public class RegisterRequestValidator : AbstractValidator<RegisterRequest>
 {
     public RegisterRequestValidator()
     {
-        RuleFor(x => x.Username).MinimumLength(5).WithMessage("Username is required");
-        RuleFor(x => x.Email).EmailAddress().WithMessage("Email is required");
+        RuleFor(x => x.Username).MinimumLength(5).WithMessage("Username is required and must be at least 5 characters");
+        RuleFor(x => x.Email).EmailAddress().WithMessage("Valid email is required");
         RuleFor(x => x.Password).Length(6, 20).WithMessage("The password must be between 6 and 20 characters long");
         RuleFor(x => x.ConfirmPassword).Equal(x => x.Password).WithMessage("The password and confirmation password do not match");
     }

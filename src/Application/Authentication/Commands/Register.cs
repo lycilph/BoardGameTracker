@@ -59,13 +59,13 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterCommand, Authe
         // Add role
         var role_result = await identity_service.AddUserToRoleAsync(user, RoleConstants.UserRole);
         if (!role_result.Succeeded)
-            return AuthenticationResponse.Failure(create_result.Errors.Select(e => e.Description));
+            return AuthenticationResponse.Failure(role_result.Errors.Select(e => e.Description));
 
         // BGG username
         user.BGGUsername = request.BGGUsername;
         var bgg_username_result = await identity_service.UpdateUserAsync(user);
         if (!bgg_username_result.Succeeded)
-            return AuthenticationResponse.Failure(create_result.Errors.Select(e => e.Description));
+            return AuthenticationResponse.Failure(bgg_username_result.Errors.Select(e => e.Description));
 
         await mail_service.SendConfirmationEmail(user, command.Origin);
 
